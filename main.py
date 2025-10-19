@@ -44,9 +44,7 @@ database = "example_cbse_database"
 default_query = (
     "SELECT school_id as 'School ID', school_name as 'School Name' FROM schools_data;"
 )
-developer_mode = args.dev
-
-connection_object = ConnectToMySQL(host, user, passwd, database, developer_mode)
+developer_mode: bool = args.dev
 
 
 def show_error(e: Exception):
@@ -58,9 +56,8 @@ def show_error(e: Exception):
 
 
 try:
-    database_connection = _mysql.connect(
-        host=host, database=database, user=user, passwd=passwd
-    )
+    db_object = ConnectToMySQL(host, user, passwd, database, developer_mode)
+    db_object.connect_to_database()
 except Exception as error:
     print("Database connection failed. Refer to following error report for more:\n")
 
@@ -70,15 +67,20 @@ except Exception as error:
     sys.exit()
 
 
-@atexit.register
-def close_database_connection():
-    if "database_connection" in globals() and database_connection.is_connected():
-        database_connection.close()
-        print("\nConnections successfully closed!")
-
-
 def display_menu():
     print(f"{'| CBSE Database |':=^80}\n")
+
+
+@atexit.register
+def display_exit():
+    print(f"{'|      EXIT     |':=^80}")
+
+
+@atexit.register
+def close_database_connection():
+    if "db_object" in globals() and db_object.check_connection():
+        db_object.close_connection()
+        print("\nConnection successfully closed!\n")
 
 
 def get_sql_query() -> str:
@@ -111,30 +113,29 @@ def get_sql_query() -> str:
 
 
 def main() -> None:
-    display_menu()
-
-    cursor = database_connection.cursor()
+    db_object.create_cursor_object()
 
     sql_query = get_sql_query()
 
     try:
         if developer_mode:
             print(f"[DEV MODE] Executing SQL Query:\n{sql_query}\n")
-        cursor.execute(sql_query)
+        db_object.execute_sql_query(sql_query)
     # '_mysql' refers to _mysql.connector
     # _mysql.errors.ProgrammingError
     except Exception as error:
         show_error(error)
         return
 
-    if cursor.description is None:
+    if db_object.check_result_set() is None:
         print("Query executed successfully (no result set)")
 
-        # cursor.execute("COMMIT;")
+        db_object.execute_sql_query("COMMIT;")
         print("COMMIT successful.")
+
         return
 
-    data = cursor.fetchall()
+    data = db_object.fetch_data()
 
     # DEBUG: DO NOT REMOVE
     # print(type(data))
@@ -142,14 +143,16 @@ def main() -> None:
     # print(repr(data))
 
     # Fetch column names from cursor
-    columns = [desc[0] for desc in cursor.description]
+    columns = [desc[0] for desc in db_object.get_column_name()]
 
     # Pretty print results in a table format
     # OPTS : "simple", "grid"
     print(tabulate(data, headers=columns, tablefmt="simple"))
 
-    print(f"\nRows retrieved: {cursor.rowcount}")
+    print(f"\nRows retrieved: {db_object.rows_retrieved()}")
 
 
 if __name__ == "__main__":
+    display_menu()
+
     main()
