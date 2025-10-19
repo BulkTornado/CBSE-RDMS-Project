@@ -3,7 +3,6 @@ Python program to access MySQL database.
 """
 
 from functional_modules import ConnectToMySQL
-import mysql.connector as _mysql
 from tabulate import tabulate
 import argparse
 import atexit
