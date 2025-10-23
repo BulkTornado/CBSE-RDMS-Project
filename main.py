@@ -39,7 +39,7 @@ args = parser.parse_args()
 host = "localhost"
 user = "root"
 passwd = "tks@123?"
-database = "example_cbse_database"
+database = "CBSE_DATABASE"
 default_query = (
     "SELECT school_id as 'School ID', school_name as 'School Name' FROM schools_data;"
 )

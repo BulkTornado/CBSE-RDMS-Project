@@ -1,6 +1,5 @@
 import mysql.connector as _mysql
 import sys
-from typing import Any
 
 
 class ConnectToMySQL:
@@ -47,7 +46,7 @@ class ConnectToMySQL:
             self.show_exception_traceback(error)
             self.close_connection()
 
-    def fetch_data(self) -> Any:
+    def fetch_data(self):
         return self._cursor_object.fetchall()
 
     def close_connection(self) -> None:
@@ -75,7 +74,7 @@ class ConnectToMySQL:
         return
 
     def __str__(self) -> str:
-        return ""
+        return f"{__name__}"
 
     def __repr__(self) -> str:
         return ""
