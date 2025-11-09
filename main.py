@@ -2,11 +2,13 @@
 Python program to access MySQL database.
 """
 
-from functional_modules import ConnectToMySQL
-from tabulate import tabulate
 import argparse
 import atexit
 import sys
+
+from tabulate import tabulate
+
+from functional_modules import ConnectToMySQL
 
 
 def str_to_bool(v: str) -> bool:
@@ -142,7 +144,7 @@ def main() -> None:
     # print(repr(data))
 
     # Fetch column names from cursor
-    columns = [desc[0] for desc in db_object.get_column_name()]
+    columns = [desc[0] for desc in db_object.get_column_name()]  # type: ignore
 
     # Pretty print results in a table format
     # OPTS : "simple", "grid"
