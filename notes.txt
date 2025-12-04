@@ -1,0 +1,17 @@
+I guess CBSE stores all exam results for an academic year in one database.
+Might be named as CBSE-EXAM-RESULT-Y20XX for a particular year.
+Each database will have 3 tables:
+    1.  SUBJECT to store all subjects offered in that year.
+    2.  SCHOOL_DATA to store all affiliated school for that year.
+    3.  STUDENT_DATA to store all registered student's details for that year,
+        along with their exam results. Secondary and Senior Secondary students are all mixed together.
+        ->  Reasoning: I remember from the exam result login page that it only asked for year of examination and student's registration number.
+
+SETUP FROM TERMINAL IN VS CODE or similar:
+~$ pip install uv
+~$ uv init
+~$ source ./.venv/bin/activate
+(.venv)~$ uv sync
+(.venv)~$ python -m set_configuration
+(.venv)~$ python -m setup
+(.venv)~$ python -m main

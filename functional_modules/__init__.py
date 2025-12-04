@@ -1,2 +1,11 @@
-from .connection_module import ConnectToMySQL
-from .gui_tkinter import MainWindow
+import sys
+
+try:
+    from .connection_module import ConnectToMySQL
+except Exception:
+    ...
+
+if __name__ == "__main__":
+    sys.exit()
+
+__all__ = [ConnectToMySQL]
