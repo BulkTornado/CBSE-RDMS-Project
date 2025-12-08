@@ -1,12 +1,12 @@
+import json
 import pickle
 import sys
-import json
 from pathlib import Path
 
 from functional_modules import ConnectToMySQL
 
 PATH_TO_CONFIG = Path() / 'config.json'
-PATH_TO_DB_QUERY = Path() / 'data' / 'database_query.sql'
+PATH_TO_DB_QUERY = Path() / 'sql_scripts' / 'database_query.sql'
 PATH_TO_COURSES_DATA = Path() / 'data' / 'courses.dat'
 
 
@@ -25,14 +25,14 @@ if not PATH_TO_DB_QUERY.exists():
 if not PATH_TO_COURSES_DATA.exists():
     print(f"Courses data file doesn't exists at : {PATH_TO_COURSES_DATA.absolute()}")
     print("Either download the courses.dat from the GitHub repo at: ...")
-    print("or run sql_queries/get_courses.py according to the instructions given in the manual to generate the file.")
+    print("or run sql_scripts/get_courses.py according to the instructions given in the manual to generate the file.")
     print("Till then, script cannot finish running.")
     sys.exit()
 
 
 with open(PATH_TO_CONFIG, 'r') as f:
-    CONFIGS = json.load(f)
-DATABASES = CONFIGS.get("databases")
+    CONFIG = json.load(f)
+DATABASES = CONFIG.get("databases")
 
 
 with open(PATH_TO_DB_QUERY, 'r') as f:
@@ -40,12 +40,9 @@ with open(PATH_TO_DB_QUERY, 'r') as f:
 
 
 with open(PATH_TO_COURSES_DATA, "rb") as f:
-    DATA = pickle.load(f)
+    COURSES_DATA = pickle.load(f)
 
-with ConnectToMySQL(host="localhost", user=CONFIGS.get("user"), passwd = CONFIGS.get("passwd")) as conn_ob:
-    conn_ob.execute_sql_query('SHOW DATABASES;')
-    _ = conn_ob.fetch_data()
-    print(conn_ob.check_connection())
-
+with ConnectToMySQL(host=CONFIG.get("host"), user=CONFIG.get("user"), passwd = CONFIG.get("passwd")) as conn_ob:
     for database in DATABASES:
         QUERY.replace("CBSE_DATABASE", database)
+

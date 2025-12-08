@@ -7,6 +7,11 @@ Each database will have 3 tables:
         along with their exam results. Secondary and Senior Secondary students are all mixed together.
         ->  Reasoning: I remember from the exam result login page that it only asked for year of examination and student's registration number.
 
+
+Total affiliated school count: 31763
+Total school count: 102
+(.venv)~$ python -m scripts.parse-affiliated-school-data
+
 SETUP FROM TERMINAL IN VS CODE or similar:
 ~$ pip install uv
 ~$ uv init

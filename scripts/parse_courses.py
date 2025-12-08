@@ -24,7 +24,7 @@ def main():
     if not PATH_TO_COURSES_DATA.exists():
         print(f"Required file at: {PATH_TO_COURSES_DATA.absolute()} does not exists.")
         print(
-            "Please run the get_courses.py file in sql_queries directory to create and populate the file with data."
+            "Please run the get_courses.py file in sql_scripts directory to create and populate the file with data."
         )
         return
 
@@ -38,5 +38,5 @@ def main():
 
 
 if __name__ == "__main__":
-    # main()
-    f1()
+    main()
+    # f1()

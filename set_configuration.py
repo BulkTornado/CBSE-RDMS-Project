@@ -15,9 +15,9 @@ CONFIGS = {
   "user": "",
   "passwd": "",
   "databases": [
-        "CBSE-EXAM-RESULT-Y2023",
-        "CBSE-EXAM-RESULT-Y2024",
-        "CBSE-EXAM-RESULT-Y2025"
+        "CBSE_EXAM_RESULT_Y2023",
+        "CBSE_EXAM_RESULT_Y2024",
+        "CBSE_EXAM_RESULT_Y2025"
     ],
   "title": "CBSE Database Manager",
   "geometry": [700, 400],
