@@ -1,103 +1,319 @@
-Name of Institution 	MASTER MIND GLOBAL ENGLISH SCHOOL
-Affiliation Number 	1130742
-State 	MAHARASHTRA
-District 	PUNE
-Postal Address 	SURVEY NO-203,ALANDI ROAD,BHOSARI
-Pin Code 	411039
-Website 	http://www.mastermindglobalschool.com
-Year of Foundation
-Date of First Opening of School 	15 Jun 2011
-Name of Principal/ Head of Institution 	Dr.Pradeepa.P
-Gender 	Unknown
-Principal's Educational/Professional Qualifications: 	ph.d
+ok ok remember my project folder structure? the file data/affiliated_schools.dat actually stores a list of all CBSE affiliated schools, the data for which currently I am manually adding. the structure is a list of tuples, and each tuple corresponds to the data of the school. obv manually building this dataset is slow and tedious, but I guess there is no another library and CBSE wouldn't really have a API to get this data, right?
+oh and I have currently not implemented your recommendations for structuring my project, imma do it later. also, in the function from where I am returning 
+now, here's my source code for parse-affiliated-school-data.py in scripts/
 
-No of Experience (in Years):
+import datetime
+import pickle
+import sys
+from pathlib import Path
 
-Administrative: 	02
-Teaching: 	02
-Status of The School 	Middle Class
-School Type 	INDEPENDENT
-Affiliation Period
+import tabulate
 
-From :   04/01/2017 To :   31/03/2020
-Name of Trust/ Society/ Managing Committee 	Shri Sawami Vivkanand Bahhuddeshi sanstha,uppal(m)
 
-===
+PATH_TO_AFFILIATED_SCHOOL_DATA = Path() / "data" / "affiliated_schools.dat"
+PATH_TO_AFFILIATED_SCHOOL_BACKUP_DATA = Path() / "backup" / "affiliated_schools.dat"
+PATH_TO_TABULAR_DATA = Path() / "tabular" / "affiliated_schools.txt"
 
-Name of Institution 	RAHUL INTERNATIONAL SCHOOL
-Affiliation Number 	1130865
-State 	MAHARASHTRA
-District 	THANE
-Postal Address 	KANAKIA PARK, NEAR SHREE L R TIWARI ENGINEERING COLLEGE OF ENGINEERING, MIRA ROAD (EAST)
-Pin Code 	401107
-Website 	http://rahulinternational.org
-Year of Foundation 	2018
-Date of First Opening of School 	05 Apr 2018
-Name of Principal/ Head of Institution 	MR. YIGAL S BANKER
-Gender 	Male
-Principal's Educational/Professional Qualifications: 	M.A B.Ed
 
-No of Experience (in Years):
+if not PATH_TO_TABULAR_DATA.exists():
+    PATH_TO_TABULAR_DATA.touch()
 
-Administrative: 	10
-Teaching: 	18
-Status of The School 	Middle Class
-School Type 	INDEPENDENT
-Affiliation Period
 
-From :   01/04/2019 To :   31/03/2022
-Name of Trust/ Society/ Managing Committee 	Shree Rahul Education Society
+COLUMNS = [
+    "affiliation_no",
+    "name_of_institution",
+    "state",
+    "district",
+    "postal_address",
+    "pin_code",
+    "website",
+    "year_of_foundation",
+    "date_of_first_opening_of_school",
+    "head_of_institution",
+    "status_of_the_school",
+    "school_type",
+    "affiliation_period_start",
+    "affiliation_period_end",
+    "remarks"
+]
+INDIAN_STATES = [
+    'ANDAMAN AND NICOBAR ISLANDS',
+    'ANDHRA PRADESH',
+    'ARUNACHAL PRADESH',
+    'ASSAM',
+    'BIHAR',
+    'CHHATTISGARH',
+    'DELHI',
+    'GOA',
+    'GUJARAT',
+    'HARYANA',
+    'HIMACHAL PRADESH',
+    'JHARKHAND',
+    'KARNATAKA',
+    'KERALA',
+    'MADHYA PRADESH',
+    'MAHARASHTRA',
+    'MANIPUR',
+    'MEGHALAYA',
+    'MIZORAM',
+    'NAGALAND',
+    'ODISHA',
+    'PUNJAB',
+    'RAJASTHAN',
+    'SIKKIM',
+    'TAMIL NADU',
+    'TELANGANA',
+    'TRIPURA',
+    'UTTAR PRADESH',
+    'UTTARAKHAND',
+    'WEST BENGAL'
+]
+STATUS_OF_SCHOOL = ["Middle Class", "Secondary Level", "Senior Secondary Level"]
+SCHOOL_TYPE = ["KV", "GOVT", "JNV", "STSS", "INDEPENDENT"]
+# JNV: Jawahar Navodyalaya Vidyalaya; STSS: smth from Sambhota Tibetan School
 
-===
+if not PATH_TO_AFFILIATED_SCHOOL_DATA.exists():
+    print("File doesn't exists. Creating file and stack SCHOOLS.")
+    PATH_TO_AFFILIATED_SCHOOL_DATA.touch()
+    SCHOOLS = []
+else:
+    try:
+        with open(PATH_TO_AFFILIATED_SCHOOL_DATA, "rb") as f:
+            SCHOOLS = pickle.load(f)
+    except EOFError:
+        print("Empty file, initiating an empty stack SCHOOLS")
+        SCHOOLS = []
+    except Exception:
+        print("(1) Undocumented exception occurred. Terminating script.")
+        sys.exit()
 
-Name of Institution 	PHOENIX ACADEMY
-Affiliation Number 	1130711
-State 	MAHARASHTRA
-District 	AHMEDNAGAR
-Postal Address 	12/1-A, STATION ROAD
-Pin Code 	414001
-Website
-Year of Foundation 	2013
-Date of First Opening of School 	07 Jan 2013
-Name of Principal/ Head of Institution 	Mrs.RUHIYA RAMIN HOSSEIN
-Gender 	Unknown
-Principal's Educational/Professional Qualifications: 	M.COM, M. ED
 
-No of Experience (in Years):
+def validate_and_return_int_value(line: str) -> int:
+    while True:
+        try:
+            _int_value = int(input(line))
+            break
+        except Exception:
+            ...
+    return _int_value
 
-Administrative: 	26
-Teaching: 	23
-Status of The School 	Middle Class
-School Type 	INDEPENDENT
-Affiliation Period
 
-From :   04/01/2017 To :   31/03/2020
-Name of Trust/ Society/ Managing Committee 	VARQA CHARITABLE INSTITUTION
+def validate_and_return_str_value(line: str) -> str:
+    while True:
+        try:
+            _str_value = " ".join(
+                input(line).strip().upper().split()
+            )
+            break
+        except Exception:
+            ...
+    return _str_value
 
-===
 
-Name of Institution 	MUMBAI PUBLIC SCHOOL JIJAMATA NAGAR (CBSE)
-Affiliation Number 	1120135
-State 	MAHARASHTRA
-District 	MUMBAI SUBURBAN
-Postal Address 	JIJAMATA NAGAR, NEAR EASTERN EXPRESS , FREE WAY, DULEEP SINGH ROAD, , CHEMBUR (EAST), MUMBAI
-Pin Code 	400074
-Website 	https://mpsjijamatanagar.mumbaipublicschools.in/
-Year of Foundation 	2023
-Date of First Opening of School
-Name of Principal/ Head of Institution 	PREETI PRASHANT JADHAV
-Gender 	Female
-Principal's Educational/Professional Qualifications: 	B.A DED DSM
+def validate_and_return_value_from_list(iterable: list[str], line: str) -> str:
+    while True:
+        try:
+            for index, item in enumerate(iterable, start=1):
+                print(f"{index}. {item}")
+            _str_value: str = iterable[int(input(line)) - 1]
+            break
+        except Exception:
+            ...
+    return _str_value
 
-No of Experience (in Years):
 
-Administrative: 	5
-Teaching: 	20
-Status of The School 	Middle Class
-School Type 	GOVT
-Affiliation Period
+def validate_and_return_date_object(line: str) -> datetime.date:
+    while True:
+        try:
+            _date = datetime.date(
+                *list(
+                    map(
+                        int,
+                        input(line).strip().split()[::-1]
+                    )
+                )
+            )
+            break
+        except Exception:
+            ...
+    return _date
 
-From :   01/04/2025 To :   31/03/2030
-Name of Trust/ Society/ Managing Committee 	BRIHANMUMBAI MUNICIPAL CORPORATION
 
-===
+def return_school_record(modifying_stack: bool = False):
+    affiliation_number = validate_and_return_int_value("\nAffiliation Number: ")
+    name_of_institution = validate_and_return_str_value("Name of Institution: ")
+    state = validate_and_return_value_from_list(INDIAN_STATES, "State code: ")
+    district = input("District: ").strip().upper()
+    postal_address = validate_and_return_str_value("Postal Address: ")
+    pin_code = validate_and_return_int_value("PIN Code: ")
+    website = input("Website (if any): ").strip() or ""
+    year_of_foundation = validate_and_return_int_value("Year of Foundation: ")
+    date_of_first_opening_of_school = validate_and_return_date_object("Date of First Opening of School (DD MM YYYY): ")
+    head_of_institution = validate_and_return_str_value("Head of Institution: ")
+    status_of_the_school = validate_and_return_value_from_list(STATUS_OF_SCHOOL, "Status of the School: ")
+    school_type = validate_and_return_value_from_list(SCHOOL_TYPE, "School Type: ")
+    affiliation_period_start = validate_and_return_date_object("Affiliation Period Start (DD MM YYYY): ")
+    affiliation_period_end   = validate_and_return_date_object("Affiliation Period End (DD MM YYYY): ")
+    remarks = input("Remarks, if any: ")
+    """while True:
+        try:
+            affiliation_number = int(input("\nAffiliation Number: "))
+            if not modifying_stack:
+                record_exists = any(record[0] == affiliation_number for record in SCHOOLS)
+                if record_exists:
+                    print(f"Record with Affiliation Number: {affiliation_number} already exists.")
+                    continue
+            name_of_institution = " ".join(
+                input("Name of Institution: ").strip().upper().split()
+            )
+            for index, value in enumerate(INDIAN_STATES, start=1):
+                print(f"{index}. {value}")
+            state = INDIAN_STATES[int(input("State code: ")) - 1]
+            district = input("District: ").strip().upper()
+            postal_address = " ".join(
+                input("Postal Address: ").strip().upper().split()
+            )
+            pin_code = int(input("PIN Code: "))
+            website = input("Website (if any): ").strip() or ""
+            year_of_foundation = int(input("Year of Foundation: "))
+            print("Date of First Opening of School (DD MM YEAR): ", end="")
+            date_of_first_opening_of_school = datetime.date(
+                *list(
+                    map(
+                        int,
+                        input().strip().split()[::-1]
+                    )
+                )
+            )
+            head_of_institution = " ".join(
+                input("Head of Institution: ").strip().upper().split()
+            )
+            for index, value in enumerate(STATUS_OF_SCHOOL, start=1):
+                print(f"{index}. {value}")
+            status_of_the_school = STATUS_OF_SCHOOL[int(input("Status of The School: ")) - 1]
+            for index, value in enumerate(SCHOOL_TYPE, start=1):
+                print(f"{index}. {value}")
+            school_type = SCHOOL_TYPE[int(input("School Type: ")) - 1]
+            print("Affiliation Period Start (DD MM YEAR): ", end="")
+            affiliation_period_start = datetime.date(
+                *list(
+                    map(
+                        int,
+                        input().strip().split()[::-1]
+                    )
+                )
+            )
+            print("Affiliation Period End (DD MM YEAR): ", end="")
+            affiliation_period_end = datetime.date(
+                *list(
+                    map(
+                        int,
+                        input().strip().split()[::-1]
+                    )
+                )
+            )
+            remarks = input("Remarks, if any: ") or ""
+            # break
+            
+        except ValueError as exc_value:
+            print(f"Exception occurred: {exc_value}")
+        except IndexError:
+            print("Refer to the index goddammit.")
+        except TypeError as exc_value:
+            print(f"Exception occurred: {exc_value}")
+        except Exception as exc_value:
+            print(f"(2) Undocumented exception occurred: {exc_value}")"""
+    return (
+        affiliation_number,
+        name_of_institution,
+        state,
+        district,
+        postal_address,
+        pin_code,
+        website,
+        year_of_foundation,
+        date_of_first_opening_of_school,
+        head_of_institution,
+        status_of_the_school,
+        school_type,
+        affiliation_period_start,
+        affiliation_period_end,
+        remarks
+    )
+
+
+def append_school_record():
+    while True:
+        school_record = return_school_record()
+        SCHOOLS.append(school_record)
+        if input("\nType 'stop' to finish: ").strip().lower() == "stop":
+            break
+    SCHOOLS.sort(key=lambda x: x[0])
+    with open(PATH_TO_AFFILIATED_SCHOOL_DATA, "wb") as f:
+        pickle.dump(SCHOOLS, f)
+    with open(PATH_TO_AFFILIATED_SCHOOL_BACKUP_DATA, "wb") as f:
+        pickle.dump(SCHOOLS, f)
+
+
+def modify_school_record():
+    if not SCHOOLS:
+        print("No records in stack SCHOOLS.")
+        return
+
+    try:
+        affiliation_no = int(input("Affiliation Number: "))
+    except ValueError:
+        print("Enter a number goddammit!")
+        return
+    except Exception as exc_value:
+        print(f"Undocumented exception occurred: {exc_value}")
+        return
+
+    for index, record in enumerate(SCHOOLS):
+        if record[0] == affiliation_no:
+            new_record = return_school_record(True)
+            SCHOOLS[index] = new_record
+            break
+    else:
+        print("Record not found.")
+        return
+
+    SCHOOLS.sort(key=lambda x: x[0])
+    with open(PATH_TO_AFFILIATED_SCHOOL_DATA, "wb") as f:
+        pickle.dump(SCHOOLS, f)
+    with open(PATH_TO_AFFILIATED_SCHOOL_BACKUP_DATA, "wb") as f:
+        pickle.dump(SCHOOLS, f)
+    print("Records updated.")
+    return
+
+
+def tabular_record():
+    print(f"Row count: {len(SCHOOLS)}")
+    if not SCHOOLS:
+        print("No record. Cannot make a tabular data.")
+        return
+    with open(PATH_TO_TABULAR_DATA, "w") as tabular_file:
+        tabular_file.write(tabulate.tabulate(SCHOOLS, headers=COLUMNS, tablefmt="pipe"))
+    print(f"Data exported to {PATH_TO_TABULAR_DATA.absolute()}")
+    return
+
+
+def main():
+    mode = input("a=append, m=modify, ls=list: ").strip().lower()
+
+    match mode:
+        case "a":
+            append_school_record()
+        case "m":
+            modify_school_record()
+        case "ls":
+            tabular_record()
+        case _:
+            print("Invalid mode. Script terminating.")
+    return
+
+
+if __name__ == '__main__':
+    main()
+
+ok now get this, I want a library from which I will first fetch all the of the Indian states and Union Territories, as well as their respective districts(maximum depth, I do not need cities), and it would be nice if based on the state and district, it automatically gets the respective pin code. currently, I have hard-coded all Indian states + only one UT(DELHI), then during runtime, I only have to enter a number to get the state, but then for district, I have to hope that I correctly write it down. so, instead of doing that, can a library help me by providing me with a list of all the districts in a state, and in the same style as of mine, I only have to enter a number, and the code will automatically pull that district data for me? so, which of the libraries will be more helpful for my purpose? 

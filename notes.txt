@@ -20,3 +20,15 @@ SETUP FROM TERMINAL IN VS CODE or similar:
 (.venv)~$ python -m set_configuration
 (.venv)~$ python -m setup
 (.venv)~$ python -m main
+
+def f():
+    try:
+        x = int(input("Integer: "))
+    except:
+        x = f()
+    return x
+
+indian-states
+indian-cities
+indiapins
+indian-pincode

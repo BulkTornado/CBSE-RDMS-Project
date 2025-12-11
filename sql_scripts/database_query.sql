@@ -39,6 +39,7 @@ CREATE TABLE AFFILIATED_SCHOOLS(
     'ASSAM',
     'BIHAR',
     'CHHATTISGARH',
+    'DELHI',
     'GOA',
     'GUJARAT',
     'HARYANA',

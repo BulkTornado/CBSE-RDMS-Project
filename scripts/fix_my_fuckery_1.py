@@ -1,8 +1,10 @@
 """
-This script is not suppossed to be run by anyone else.
+This script is not supposed to be run by anyone else.
 I am just fixing my stupid fuckery.
 - BulkTornado, 2025-12-05
 """
+
+
 import json
 import datetime
 from pathlib import Path
@@ -10,8 +12,7 @@ import pickle
 
 
 PATH_TO_AFFILIATED_SCHOOL = Path() / "data" / "affiliated_schools.dat"
-PATH_TO_TABULAR_DATA = Path() / "data" / "affiliated_schools.txt"
-PATH_TO_TEMP_TXT = Path() / "data" / "temp.txt"
+PATH_TO_TABULAR_DATA = Path() / "tabular" / "affiliated_schools.txt"
 
 DICTIONARY = {}
 SCHOOLS = []
