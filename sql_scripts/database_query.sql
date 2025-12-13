@@ -32,38 +32,7 @@ CREATE TABLE AFFILIATED_SCHOOLS(
     affiliation_no INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     name_of_institution VARCHAR(80) NOT NULL,
 
-    state ENUM(
-    'ANDAMAN AND NICOBAR ISLANDS',
-    'ANDHRA PRADESH',
-    'ARUNACHAL PRADESH',
-    'ASSAM',
-    'BIHAR',
-    'CHHATTISGARH',
-    'DELHI',
-    'GOA',
-    'GUJARAT',
-    'HARYANA',
-    'HIMACHAL PRADESH',
-    'JHARKHAND',
-    'KARNATAKA',
-    'KERALA',
-    'MADHYA PRADESH',
-    'MAHARASHTRA',
-    'MANIPUR',
-    'MEGHALAYA',
-    'MIZORAM',
-    'NAGALAND',
-    'ODISHA',
-    'PUNJAB',
-    'RAJASTHAN',
-    'SIKKIM',
-    'TAMIL NADU',
-    'TELANGANA',
-    'TRIPURA',
-    'UTTAR PRADESH',
-    'UTTARAKHAND',
-    'WEST BENGAL'
-    ) NOT NULL,
+    state VARCHAR(40) NOT NULL,
     district VARCHAR(40) NOT NULL,
     postal_address VARCHAR(255) NOT NULL,
     pin_code MEDIUMINT UNSIGNED NOT NULL,
@@ -81,9 +50,9 @@ CREATE TABLE AFFILIATED_SCHOOLS(
     affiliation_period_start DATE NOT NULL,
     affiliation_period_end DATE NOT NULL,
 
-    remarks VARCHAR(255) DEFAULT NULL,
+    remarks VARCHAR(255) DEFAULT '' NOT NULL,
 
-    CONSTRAINT chk_pin_code CHECK (pin_code BETWEEN 0 AND 999999)
+    CONSTRAINT chk_pin_code CHECK (pin_code BETWEEN 100000 AND 999999)
 );
 
 
@@ -91,8 +60,8 @@ CREATE TABLE REGISTERED_STUDENTS(
 
     exam_roll_no INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 
-    school_affiliation_no INT UNSIGNED  NOT NULL, -- UNIQUE
-    exam_centre_no INT UNSIGNED  NOT NULL, -- UNIQUE
+    school_affiliation_no INT UNSIGNED NOT NULL,
+    exam_centre_no INT UNSIGNED NOT NULL,
 
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) DEFAULT NULL,
@@ -107,26 +76,26 @@ CREATE TABLE REGISTERED_STUDENTS(
     -- admit card starts with 2 english letters and rest filled with integers from 0 to 9
     admit_card_id CHAR(8) UNIQUE NOT NULL,
 
-    main_subject1 SMALLINT UNSIGNED  NOT NULL, -- UNIQUE
-    main_subject2 SMALLINT UNSIGNED  NOT NULL, -- UNIQUE
-    main_subject3 SMALLINT UNSIGNED  NOT NULL, -- UNIQUE
-    main_subject4 SMALLINT UNSIGNED  NOT NULL, -- UNIQUE
-    main_subject5 SMALLINT UNSIGNED  NOT NULL, -- UNIQUE
-    additional_subject1 SMALLINT UNSIGNED  DEFAULT NULL, -- UNIQUE
-    additional_subject2 SMALLINT UNSIGNED  DEFAULT NULL, -- UNIQUE
-    additional_subject3 SMALLINT UNSIGNED  DEFAULT NULL, -- UNIQUE
+    main_subject_1 SMALLINT UNSIGNED NOT NULL,
+    main_subject_2 SMALLINT UNSIGNED NOT NULL,
+    main_subject_3 SMALLINT UNSIGNED NOT NULL,
+    main_subject_4 SMALLINT UNSIGNED NOT NULL,
+    main_subject_5 SMALLINT UNSIGNED NOT NULL,
+    additional_subject_1 SMALLINT UNSIGNED DEFAULT NULL,
+    additional_subject_2 SMALLINT UNSIGNED DEFAULT NULL,
+    additional_subject_3 SMALLINT UNSIGNED DEFAULT NULL,
 
     FOREIGN KEY (school_affiliation_no) REFERENCES AFFILIATED_SCHOOLS(affiliation_no),
     FOREIGN KEY (exam_centre_no) REFERENCES AFFILIATED_SCHOOLS(affiliation_no),
 
-    FOREIGN KEY (main_subject1) REFERENCES COURSES(course_code),
-    FOREIGN KEY (main_subject2) REFERENCES COURSES(course_code),
-    FOREIGN KEY (main_subject3) REFERENCES COURSES(course_code),
-    FOREIGN KEY (main_subject4) REFERENCES COURSES(course_code),
-    FOREIGN KEY (main_subject5) REFERENCES COURSES(course_code),
-    FOREIGN KEY (additional_subject1) REFERENCES COURSES(course_code),
-    FOREIGN KEY (additional_subject2) REFERENCES COURSES(course_code),
-    FOREIGN KEY (additional_subject3) REFERENCES COURSES(course_code),
+    FOREIGN KEY (main_subject_1) REFERENCES COURSES(course_code),
+    FOREIGN KEY (main_subject_2) REFERENCES COURSES(course_code),
+    FOREIGN KEY (main_subject_3) REFERENCES COURSES(course_code),
+    FOREIGN KEY (main_subject_4) REFERENCES COURSES(course_code),
+    FOREIGN KEY (main_subject_5) REFERENCES COURSES(course_code),
+    FOREIGN KEY (additional_subject_1) REFERENCES COURSES(course_code),
+    FOREIGN KEY (additional_subject_2) REFERENCES COURSES(course_code),
+    FOREIGN KEY (additional_subject_3) REFERENCES COURSES(course_code),
 
     CONSTRAINT chk_aadhar_no CHECK (aadhar_no BETWEEN 0 AND 999999999999),
     CONSTRAINT chk_apaar_id CHECK (apaar_id BETWEEN 0 AND 999999999999),
@@ -144,6 +113,8 @@ CREATE TABLE EXAM_RESULTS(
     additional_subject_1 TINYINT UNSIGNED NOT NULL,
     additional_subject_2 TINYINT UNSIGNED DEFAULT NULL,
     additional_subject_3 TINYINT UNSIGNED DEFAULT NULL,
+
+    FOREIGN KEY (student_registration_no) REFERENCES REGISTERED_STUDENTS(exam_roll_no),
 
     CONSTRAINT chk_valid_marks_range CHECK(
         (main_subject_1 BETWEEN 0 AND 100) AND

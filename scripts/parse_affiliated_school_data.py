@@ -7,9 +7,9 @@ from pathlib import Path
 import tabulate
 
 
-PATH_TO_AFFILIATED_SCHOOL_DATA = Path() / "data" / "affiliated_schools.dat"
-PATH_TO_AFFILIATED_SCHOOL_BACKUP_DATA = Path() / "backup" / "affiliated_schools.dat"
-PATH_TO_TABULAR_DATA = Path() / "tabular_data" / "affiliated_schools.txt"
+PATH_TO_AFFILIATED_SCHOOL_DATA          = Path() / "data"           / "affiliated_schools.dat"
+PATH_TO_AFFILIATED_SCHOOL_BACKUP_DATA   = Path() / "backup"         / "affiliated_schools.dat"
+PATH_TO_TABULAR_DATA                    = Path() / "tabular_data"   / "affiliated_schools.txt"
 
 
 COLUMNS = [
@@ -73,10 +73,11 @@ if not PATH_TO_AFFILIATED_SCHOOL_DATA.exists():
 else:
     try:
         with open(PATH_TO_AFFILIATED_SCHOOL_DATA, "rb") as f:
+            # type expected: list[tuple[int, str, str, str, str, int, str, int, date, str, str, str, date, date, str]]
             SCHOOLS = pickle.load(f)
     except EOFError:
         print("Empty file, initiating an empty stack SCHOOLS")
-        SCHOOLS: list[tuple[int, str, str, str, str, int, str, int, date, str, str, str, date, date, str]] = []
+        SCHOOLS = []
     except Exception as exc_value:
         print(f"(1) Undocumented exception occurred.\n\t{exc_value}\n")
         print("Terminating script.")
@@ -134,16 +135,17 @@ def validate_and_return_date_object(line: str) -> date:
     while True:
         try:
             # input type expected: DD MM YYYY
-            _str_input: list[str] = input(line).strip().split()
-            mapped_to_int: map = map(int, _str_input)
-            converted_to_list: list[int] = list(mapped_to_int)
-            # list type expected: DD MM YYYY
+            _str_input:         list[str]   = input(line).strip().split()
+            mapped_to_int:      map         = map(int, _str_input)
+            converted_to_list:  list[int]   = list(mapped_to_int)
+            # list type expected: [DD, MM, YYYY]
             # will reverse this when unpacking inside the date() function
 
 
             if not len(converted_to_list) == 3:
-                print("Exactly 3 values needed(DD MM YYYY)")
-                print(f"Values provided: {len(converted_to_list)}")
+                print("Exactly 3 values needed in the following format: DD MM YYYY")
+                print(f"Number of values provided: {len(converted_to_list)}")
+                print(f"Values provided: {converted_to_list}")
                 continue
             # Can I remove this?
             """if not (1 <= converted_to_list[-1] <= 9999):
@@ -170,11 +172,13 @@ def validate_and_return_date_object(line: str) -> date:
 
 def return_school_record():
     while True:
-        affiliation_number: int                 = validate_and_return_int_value("\nAffiliation Number: ")
-        record_exists: bool                     = any(record[0] == affiliation_number for record in SCHOOLS)
+        affiliation_number: int             = validate_and_return_int_value("\nAffiliation Number: ")
+        record_exists: bool                 = any(record[0] == affiliation_number for record in SCHOOLS)
+
         if record_exists:
             print(f"Record with the affiliation number: {affiliation_number} already exists.")
             continue
+
         break
 
     name_of_institution: str                = validate_and_return_str_value("Name of Institution: ")
@@ -218,10 +222,14 @@ def append_school_record():
         if input("\nType 'stop' to finish: ").strip().lower() == "stop":
             break
     SCHOOLS.sort(key=lambda x: x[0])
-    with open(PATH_TO_AFFILIATED_SCHOOL_DATA, "wb") as f:
-        pickle.dump(SCHOOLS, f)
-    with open(PATH_TO_AFFILIATED_SCHOOL_BACKUP_DATA, "wb") as f:
-        pickle.dump(SCHOOLS, f)
+    with (
+        open(PATH_TO_AFFILIATED_SCHOOL_DATA, "wb") as f1,
+        open(PATH_TO_AFFILIATED_SCHOOL_BACKUP_DATA, "wb") as f2
+    ):
+        pickle.dump(SCHOOLS, f1)
+        pickle.dump(SCHOOLS, f2)
+    print("Records updated on disk.")
+    return
 
 
 def modify_school_record():
@@ -234,7 +242,7 @@ def modify_school_record():
     for index, record in enumerate(SCHOOLS):
         if record[0] == affiliation_no:
             print("Record found. Enter new details for this record.\n")
-            new_record = return_school_record()
+            new_record = return_school_record() #TODO: Serious issue, remember bro
             SCHOOLS[index] = new_record
             break
     else:
@@ -242,10 +250,13 @@ def modify_school_record():
         return
 
     SCHOOLS.sort(key=lambda x: x[0])
-    with open(PATH_TO_AFFILIATED_SCHOOL_DATA, "wb") as f1, open(PATH_TO_AFFILIATED_SCHOOL_BACKUP_DATA, "wb") as f2:
+    with (
+        open(PATH_TO_AFFILIATED_SCHOOL_DATA, "wb") as f1,
+        open(PATH_TO_AFFILIATED_SCHOOL_BACKUP_DATA, "wb") as f2
+    ):
         pickle.dump(SCHOOLS, f1)
         pickle.dump(SCHOOLS, f2)
-    print("Records updated.")
+    print("Records updated on disk.")
     return
 
 

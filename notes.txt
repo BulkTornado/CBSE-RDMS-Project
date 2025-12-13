@@ -1,5 +1,5 @@
 I guess CBSE stores all exam results for an academic year in one database.
-Might be named as CBSE-EXAM-RESULT-Y20XX for a particular year.
+Might be named as CBSE_EXAM_RESULT_Y20XX for a particular year.
 Each database will have 3 tables:
     1.  SUBJECT to store all subjects offered in that year.
     2.  SCHOOL_DATA to store all affiliated school for that year.
@@ -13,9 +13,10 @@ Total school count: 102
 (.venv)~$ python -m scripts.parse-affiliated-school-data
 
 SETUP FROM TERMINAL IN VS CODE or similar:
-~$ pip install uv
-~$ uv init
+~$ python -m venv .venv
 ~$ source ./.venv/bin/activate
+(.venv)~$ pip install uv
+(.venv)~$ uv init
 (.venv)~$ uv sync
 (.venv)~$ python -m set_configuration
 (.venv)~$ python -m setup

@@ -1,0 +1,42 @@
+  code  name                         theory    practical    internal_assessment    grade
+------  -------------------------  --------  -----------  ---------------------  -------
+     2  Hindi Course-A                   80            0                     20       10
+     3  Urdu Course-A                    80            0                     20       10
+     4  Urdu Course-B                    80            0                     20       10
+     5  Bengali                          80            0                     20       10
+    41  Mathematics Standard             80            0                     20       10
+    49  Painting                         30           50                     20       10
+    85  Hindi Course-B                   80            0                     20       10
+    86  Science                          80            0                     20       10
+    87  Social Science                   80            0                     20       10
+   101  English Communicative            80            0                     20       10
+   119  Sanskrit Communicative           80            0                     20       10
+   122  Sanskrit                         80            0                     20       10
+   184  English Lang & Lit.              80            0                     20       10
+   241  Mathematics-Basic                80            0                     20       10
+   402  Information Technology           50           50                      0       10
+   417  Artificial Intelligence          50           50                      0       10
+   418  Physical Activity Trainer        50           50                      0       10
+     1  English Elective                 80            0                     20       12
+     2  Hindi Elective                   80            0                     20       12
+     3  Urdu Elective                    80            0                     20       12
+    22  Sanskrit Elective                80            0                     20       12
+    27  History                          80            0                     20       12
+    28  Political Science                80            0                     20       12
+    29  Geography                        70           30                      0       12
+    30  Economics                        80           20                      0       12
+    41  Mathematics                      80            0                     20       12
+    42  Physics                          70           30                      0       12
+    43  Chemistry                        70           30                      0       12
+    44  Biology                          70           30                      0       12
+    48  Physical Education               70           30                      0       12
+    65  Informatics Practices            70           30                      0       12
+    83  Computer Science                 70           30                      0       12
+   105  Bengali                          80            0                     20       12
+   301  English Core                     80            0                     20       12
+   302  Hindi Core                       80            0                     20       12
+   303  Urdu Core                        80            0                     20       12
+   322  Sanskrit Core                    80            0                     20       12
+   802  Information Technology           60           40                      0       12
+   843  Artificial Intelligence          50           50                      0       12
+   845  Physical Activity Trainer        50           50                      0       12
