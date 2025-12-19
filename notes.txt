@@ -8,6 +8,15 @@ Each database will have 3 tables:
         ->  Reasoning: I remember from the exam result login page that it only asked for year of examination and student's registration number.
 
 
+CLASS 10
+MAIN SUBJECT: [Language, Compulsory Subject]
+ADDITIONAL SUBJECT: [Other Subject, Skill Subject]
+
+CLASS 12
+MAIN SUBJECT: [Language, Academic Elective]
+ADDITIONAL SUBJECT: [Skill Subject]
+
+
 Total affiliated school count: 31763
 Total school count: 102
 (.venv)~$ python -m scripts.parse-affiliated-school-data

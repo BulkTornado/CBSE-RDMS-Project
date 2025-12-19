@@ -76,54 +76,48 @@ CREATE TABLE REGISTERED_STUDENTS(
     -- admit card starts with 2 english letters and rest filled with integers from 0 to 9
     admit_card_id CHAR(8) UNIQUE NOT NULL,
 
-    main_subject_1 SMALLINT UNSIGNED NOT NULL,
-    main_subject_2 SMALLINT UNSIGNED NOT NULL,
-    main_subject_3 SMALLINT UNSIGNED NOT NULL,
-    main_subject_4 SMALLINT UNSIGNED NOT NULL,
-    main_subject_5 SMALLINT UNSIGNED NOT NULL,
-    additional_subject_1 SMALLINT UNSIGNED DEFAULT NULL,
-    additional_subject_2 SMALLINT UNSIGNED DEFAULT NULL,
-    additional_subject_3 SMALLINT UNSIGNED DEFAULT NULL,
+    FOREIGN KEY (school_affiliation_no)
+        REFERENCES AFFILIATED_SCHOOLS(affiliation_no),
+    FOREIGN KEY (exam_centre_no)
+        REFERENCES AFFILIATED_SCHOOLS(affiliation_no),
 
-    FOREIGN KEY (school_affiliation_no) REFERENCES AFFILIATED_SCHOOLS(affiliation_no),
-    FOREIGN KEY (exam_centre_no) REFERENCES AFFILIATED_SCHOOLS(affiliation_no),
-
-    FOREIGN KEY (main_subject_1) REFERENCES COURSES(course_code),
-    FOREIGN KEY (main_subject_2) REFERENCES COURSES(course_code),
-    FOREIGN KEY (main_subject_3) REFERENCES COURSES(course_code),
-    FOREIGN KEY (main_subject_4) REFERENCES COURSES(course_code),
-    FOREIGN KEY (main_subject_5) REFERENCES COURSES(course_code),
-    FOREIGN KEY (additional_subject_1) REFERENCES COURSES(course_code),
-    FOREIGN KEY (additional_subject_2) REFERENCES COURSES(course_code),
-    FOREIGN KEY (additional_subject_3) REFERENCES COURSES(course_code),
-
-    CONSTRAINT chk_aadhar_no CHECK (aadhar_no BETWEEN 0 AND 999999999999),
-    CONSTRAINT chk_apaar_id CHECK (apaar_id BETWEEN 0 AND 999999999999),
-    CONSTRAINT chk_admit_card_id CHECK (admit_card_id REGEXP '[A-Za-z]{2}[0-9]{6}')
+    CONSTRAINT chk_aadhar_no
+        CHECK (aadhar_no BETWEEN 0 AND 999999999999),
+    CONSTRAINT chk_apaar_id
+        CHECK (apaar_id BETWEEN 0 AND 999999999999),
+    CONSTRAINT chk_admit_card_id
+        CHECK (admit_card_id REGEXP '[A-Za-z]{2}[0-9]{6}')
 );
 
 
-CREATE TABLE EXAM_RESULTS(
-    student_registration_no INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    main_subject_1 TINYINT UNSIGNED NOT NULL,
-    main_subject_2 TINYINT UNSIGNED NOT NULL,
-    main_subject_3 TINYINT UNSIGNED NOT NULL,
-    main_subject_4 TINYINT UNSIGNED NOT NULL,
-    main_subject_5 TINYINT UNSIGNED NOT NULL,
-    additional_subject_1 TINYINT UNSIGNED NOT NULL,
-    additional_subject_2 TINYINT UNSIGNED DEFAULT NULL,
-    additional_subject_3 TINYINT UNSIGNED DEFAULT NULL,
+CREATE TABLE EXAM_RESULTS (
+    exam_roll_no INT UNSIGNED NOT NULL,
+    course_code SMALLINT UNSIGNED NOT NULL,
 
-    FOREIGN KEY (student_registration_no) REFERENCES REGISTERED_STUDENTS(exam_roll_no),
+    subject_type ENUM('MAIN','ADDITIONAL') NOT NULL,
 
-    CONSTRAINT chk_valid_marks_range CHECK(
-        (main_subject_1 BETWEEN 0 AND 100) AND
-        (main_subject_2 BETWEEN 0 AND 100) AND
-        (main_subject_3 BETWEEN 0 AND 100) AND
-        (main_subject_4 BETWEEN 0 AND 100) AND
-        (main_subject_5 BETWEEN 0 AND 100) AND
-        (additional_subject_1 BETWEEN 0 AND 100) AND
-        (additional_subject_2 BETWEEN 0 AND 100) AND
-        (additional_subject_3 BETWEEN 0 AND 100)
+    marks_theory TINYINT UNSIGNED NOT NULL,
+    marks_practical TINYINT UNSIGNED DEFAULT 0 NOT NULL,
+    marks_internal TINYINT UNSIGNED DEFAULT 0 NOT NULL,
+
+    PRIMARY KEY (exam_roll_no, course_code),
+
+    FOREIGN KEY (exam_roll_no)
+        REFERENCES REGISTERED_STUDENTS(exam_roll_no)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (course_code)
+        REFERENCES COURSES(course_code),
+
+    CONSTRAINT chk_valid_marks CHECK(
+        (
+            marks_theory BETWEEN 0 AND 100
+            AND marks_practical BETWEEN 0 AND 100
+            AND marks_internal BETWEEN 0 AND 100
+        )
+        AND -- sum is always 100
+        (
+            marks_theory + marks_practical + marks_internal = 100
+        )
     )
 );
