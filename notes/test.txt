@@ -1,0 +1,17 @@
+(.venv) bulktornado@bulktornado-desktop:~/Projects/CBSE-RDMS-Project$ python -m setup
+Connection successful.
+Query executed successfully (No result set).
+Exception traceback:
+2014 (HY000): Commands out of sync; you can't run this command now
+
+Full exception traceback:
+DatabaseError(2014, "2014 (HY000): Commands out of sync; you can't run this command now", 'HY000')
+
+Exception traceback:
+2014 (HY000): Commands out of sync; you can't run this command now
+
+Full exception traceback:
+DatabaseError(2014, "2014 (HY000): Commands out of sync; you can't run this command now", 'HY000')
+
+Connection has already been closed.
+Set up has been completed. Now you can run main.py to start the program.

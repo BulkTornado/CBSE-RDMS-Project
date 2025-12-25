@@ -1,7 +1,7 @@
 import sys
 
 import mysql.connector as _mysql
-
+import tabulate
 
 class ConnectToMySQL:
     def __init__(self, host: str, user: str, passwd: str) -> None:
@@ -18,23 +18,23 @@ class ConnectToMySQL:
             self.show_exception_traceback(exc_tb)
             sys.exit("Terminating script early.\n")
         except Exception as exc_tb:
-            print("\nAn undocumented error occurred. Refer to exception traceback.\n")
+            print("\n(1) Undocumented error occurred. Refer to exception traceback.\n")
             self.show_exception_traceback(exc_tb)
             sys.exit("Terminating script early.\n")
 
         self._cursor_object = self._db_connection.cursor()
         print("Connection successful.")
 
-        # self._default_query = "SELECT school_id as 'School ID', school_name as 'School Name' FROM schools_data;"
+        self._fetched_data = []
 
     def __enter__(self):
         return self
 
     def __str__(self) -> str:
-        return f"{__name__}"
+        return f"ConnectToMySQL(host='{self._host}', user='{self._user}', passwd='{self._passwd}')"
 
     def __repr__(self) -> str:
-        return ""
+        return f"ConnectToMySQL('To be implemented')"
 
     def __exit__(self, exc_type, exc_value, exc_tb) -> None:
         self.close_connection()
@@ -61,13 +61,17 @@ class ConnectToMySQL:
             self._cursor_object.execute(sql_query)
             if self.check_result_set() is None:
                 print("Query executed successfully (No result set).")
-                # self.commit_to_database()
                 return
+
         except Exception as error:
             self.show_exception_traceback(error)
 
     def fetch_data(self):
         return self._cursor_object.fetchall()
+
+    @staticmethod
+    def parameterized_data(data: list | tuple) -> str:
+        return ',\n'.join(map(str, data))
 
     def use_db(self, db_name: str = "") -> None:
         self.execute_sql_query(f"USE {db_name};")

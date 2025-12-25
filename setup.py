@@ -1,3 +1,4 @@
+import datetime
 import json
 import pickle
 import sys
@@ -42,26 +43,65 @@ if not PATH_TO_DB_QUERY.exists():
     sys.exit()
 
 
-with open(PATH_TO_CONFIG, 'r') as f:
-    CONFIG = json.load(f)
+with (
+    open(PATH_TO_AFFILIATED_SCHOOLS_DATA, "rb") as f1,
+    open(PATH_TO_COURSES_DATA, "rb") as f2,
+    open(PATH_TO_CONFIG, 'r') as f3,
+    open(PATH_TO_DB_QUERY, 'r') as f4
+):
+    AFFILIATED_SCHOOLS      = pickle.load(f1)
+    COURSES_DATA            = pickle.load(f2)
+    CONFIG                  = json.load(f3)
+    QUERY                   = f4.read()
 
-with open(PATH_TO_DB_QUERY, 'r') as f:
-    QUERY = f.read()
 
-with open(PATH_TO_COURSES_DATA, "rb") as f:
-    COURSES_DATA = pickle.load(f)
+if CONFIG.get("setup_completed"):
+    print("Set-up has already been completed before.")
+    print("If that is not the case, please run set_configuration and follow the instructions carefully.")
+    sys.exit()
 
 
 HOST    = CONFIG.get("host")
 USER    = CONFIG.get("user")
 PASSWD  = CONFIG.get("passwd")
 
-DATABASES = CONFIG.get("databases")
+CURRENT_YEAR: int   = datetime.date.today().year
+QUERY               = QUERY.replace("XXXX", str(CURRENT_YEAR))
+
+MAIN_COURSES            = list(
+    map(
+        lambda x: (*x[:-2], x[-1]),
+        filter(
+            lambda x: x[-2]=='MAIN',
+            COURSES_DATA
+        )
+    )
+)
+ADDITIONAL_COURSES      = list(
+    map(
+        lambda x: (*x[:-2], x[-1]),
+        filter(
+            lambda x: x[-2]=='ADDITIONAL',
+            COURSES_DATA
+        )
+    )
+)
 
 
 with ConnectToMySQL(
         host=HOST, user=USER, passwd =PASSWD
 ) as conn_ob:
-    for database in DATABASES:
-        QUERY.replace("CBSE_DATABASE", database)
+    conn_ob.execute_sql_query(QUERY)
+    conn_ob.execute_sql_query(f"INSERT INTO COURSES VALUES {conn_ob.parameterized_data(COURSES_DATA)};")
+    conn_ob.execute_sql_query(f"INSERT INTO AFFILIATED_SCHOOLS VALUES {conn_ob.parameterized_data(AFFILIATED_SCHOOLS)};")
+
+    ...#(conn_ob.parameterized_data(MAIN_COURSES))
+
+
+#CONFIG["setup_completed"] = True
+#with open(PATH_TO_CONFIG, "w") as f:
+    #json.dump(CONFIG, f, indent=4)
+
+
+print("Set up has been completed. Now you can run main.py to start the program.")
 

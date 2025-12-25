@@ -2,26 +2,22 @@ import json
 import sys
 from pathlib import Path
 
-ROOT_DIR = Path('.')
-PATH_TO_CONFIG = ROOT_DIR / 'config.json'
-PATH_TO_ASSETS_DIR = ROOT_DIR / 'assets'
+ROOT_DIR                = Path('.')
+PATH_TO_CONFIG          = ROOT_DIR / 'config.json'
+PATH_TO_ASSETS_DIR      = ROOT_DIR / 'assets'
 ASSETS = [
     PATH_TO_ASSETS_DIR / 'icon.png'
 ]
 MISSING_ASSETS: list[str] = []
 
-CONFIGS = {
-  "host": "",
-  "user": "",
-  "passwd": "",
-  "databases": [
-        "CBSE_EXAM_RESULT_Y2023",
-        "CBSE_EXAM_RESULT_Y2024",
-        "CBSE_EXAM_RESULT_Y2025"
-    ],
-  "title": "CBSE Database Manager",
-  "geometry": [700, 400],
-  "assets": []
+CONFIG = {
+    "host": "",
+    "user": "",
+    "passwd": "",
+    "title": "CBSE Database Manager",
+    "geometry": [700, 400],
+    "assets": [],
+    "setup_completed": False
 }
 
 
@@ -43,7 +39,7 @@ def main():
     if not PATH_TO_CONFIG.exists():
         print("config.json doesn't exists, creating config.json file first.")
         PATH_TO_CONFIG.touch()
-        print("config.json has been created, continue with setting-up your configs.")
+        print("config.json has been created, continuing with setting-up your configs.")
 
     if not PATH_TO_ASSETS_DIR.exists():
         print("Assets directory does not exists. Creating the directory now...")
@@ -62,19 +58,24 @@ def main():
         print("\nTill no fix, program will not continue to work. Terminating script early...")
         sys.exit()
 
-    host = input("Enter host(press Enter to set host as 'localhost'): ") or "localhost"
-    user = input("Enter username(press Enter to set user as 'root'): ") or "root"
-    passwd = input("Enter password: ")
-    assets = [asset.absolute().__str__() for asset in ASSETS]
+    host        = input("Enter host(press Enter to set host as 'localhost'): ") or "localhost"
+    user        = input("Enter username(press Enter to set user as 'root'): ") or "root"
+    passwd      = input("Enter password: ")
+    assets      = [
+        asset.absolute().__str__()
+        for asset in ASSETS
+    ]
+    setup_completed = bool(input("Press Enter if set up has not been completed before, else enter 1: "))
 
 
-    CONFIGS["host"] = host
-    CONFIGS["user"] = user
-    CONFIGS["passwd"] = passwd
-    CONFIGS["assets"] = assets
+    CONFIG["host"]             = host
+    CONFIG["user"]             = user
+    CONFIG["passwd"]           = passwd
+    CONFIG["assets"]           = assets
+    CONFIG["setup_completed"]  = setup_completed
 
     with open("config.json", "w") as f:
-        json.dump(CONFIGS, f, indent=4)
+        json.dump(CONFIG, f, indent=4)
 
     print("Configuration has been set.")
 
