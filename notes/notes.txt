@@ -42,3 +42,17 @@ indian-states
 indian-cities
 indiapins
 indian-pincode
+
+500000
+(1000000, 2430427, 2400061, 'Tanvi Ranganathan', datetime.date(2009, 1, 1), 'F', 10, 822344527893, 644433156321, 'N', 'BI535664')
+1000000 2430427 2400061 Tanvi Ranganathan 2009-01-01 F 10 822344527893 644433156321 N BI535664
+(1000001, 2430412, 2430166, 'Azad Krishnamurthy', datetime.date(2009, 1, 1), 'F', 10, 294097497228, 480786663901, 'N', 'YA373995')
+1000001 2430412 2430166 Azad Krishnamurthy 2009-01-01 F 10 294097497228 480786663901 N YA373995
+(1000002, 2440004, 1100024, 'Gagan Padmanabhan', datetime.date(2009, 1, 1), 'M', 12, 568676433187, 428979100011, 'N', 'ZG264592')
+1000002 2440004 1100024 Gagan Padmanabhan 2009-01-01 M 12 568676433187 428979100011 N ZG264592
+(1000003, 2430393, 2430432, 'Pallavi Dhawan', datetime.date(2009, 1, 1), 'F', 10, 162301725414, 282763889458, 'N', 'LQ433755')
+1000003 2430393 2430432 Pallavi Dhawan 2009-01-01 F 10 162301725414 282763889458 N LQ433755
+(1000004, 2730053, 2430392, 'Bimala Hayer', datetime.date(2009, 1, 1), 'M', 12, 676306393262, 931676574007, 'N', 'TR149933')
+1000004 2730053 2430392 Bimala Hayer 2009-01-01 M 12 676306393262 931676574007 N TR149933
+
+Current known limitation: student from one state could get exam centre in another state. in this first 5 student records, only 1 such instance occurred, but at 500,000 records, I would assume a lot more such instances will be occurring.

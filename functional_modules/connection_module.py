@@ -1,7 +1,6 @@
 import sys
 
 import mysql.connector as _mysql
-import tabulate
 
 class ConnectToMySQL:
     def __init__(self, host: str, user: str, passwd: str) -> None:
@@ -22,10 +21,11 @@ class ConnectToMySQL:
             self.show_exception_traceback(exc_tb)
             sys.exit("Terminating script early.\n")
 
-        self._cursor_object = self._db_connection.cursor()
+        self._cursor = self._db_connection.cursor()
         print("Connection successful.")
 
-        self._fetched_data = []
+        self._result_set = []
+        self._exception_history = []
 
     def __enter__(self):
         return self
@@ -41,6 +41,7 @@ class ConnectToMySQL:
 
     def commit_to_database(self):
         self._db_connection.commit()
+        print("(COMMIT successful)")
 
     def check_connection(self) -> bool:
         return self._db_connection.is_connected()
@@ -53,37 +54,40 @@ class ConnectToMySQL:
         print("Connection closed successfully.")
         return
 
-    def check_result_set(self):
-        return self._cursor_object.description
-
     def execute_sql_query(self, sql_query: str) -> None:
         try:
-            self._cursor_object.execute(sql_query)
-            if self.check_result_set() is None:
-                print("Query executed successfully (No result set).")
-                return
+            self._cursor.execute(sql_query)
+            print("Query executed successfully")
+            _result_set = self._cursor.description
+            _fetched_data = self._cursor.fetchall()
+            _row_count = self._cursor.rowcount
+            if _result_set is not None:
+                self._result_set.append((_result_set, _fetched_data, _row_count))
+                print("(Query result stored)\n")
+            else:
+                print("(No result set)\n")
 
         except Exception as error:
             self.show_exception_traceback(error)
 
+
     def fetch_data(self):
-        return self._cursor_object.fetchall()
+        return self._result_set[-1]
 
     @staticmethod
     def parameterized_data(data: list | tuple) -> str:
-        return ',\n'.join(map(str, data))
+        return ','.join(map(str, data))
 
     def use_db(self, db_name: str = "") -> None:
         self.execute_sql_query(f"USE {db_name};")
 
-    def get_column_name(self):
-        return self._cursor_object.description
-
-    def rows_retrieved(self) -> int:
-        return self._cursor_object.rowcount
+    def show_stored_data(self):
+        for item in self._result_set:
+            print(item)
 
     def show_exception_traceback(self, exc_tb: Exception) -> None:
-        print(f"Exception traceback:\n{exc_tb}\n")
+        #print(f"Exception traceback:\n{exc_tb}\n")
+        self._exception_history.append(exc_tb)
         print(f"Full exception traceback:\n{repr(exc_tb)}\n")
         return
 

@@ -4,16 +4,19 @@ USE CBSE_EXAM_RESULT_YXXXX;
 
 CREATE TABLE COURSES(
 
-    course_code SMALLINT UNSIGNED PRIMARY KEY,
-    course_name VARCHAR(50) UNIQUE NOT NULL,
+    course_code SMALLINT UNSIGNED,
+    course_name VARCHAR(50) NOT NULL,
 
     marks_theory TINYINT UNSIGNED NOT NULL,
     marks_practical_assessment TINYINT UNSIGNED DEFAULT 0 NOT NULL,
     marks_internal_assessment TINYINT UNSIGNED DEFAULT 0 NOT NULL,
 
-    grade ENUM(10, 12) NOT NULL,
+    grade TINYINT UNSIGNED NOT NULL
+        CHECK (grade IN (10, 12)),
 
-    CONSTRAINT chk_valid_marks CHECK(
+    PRIMARY KEY (course_code, grade),
+
+    CONSTRAINT chk_course_valid_marks CHECK(
         (
             marks_theory BETWEEN 0 AND 100
             AND marks_practical_assessment BETWEEN 0 AND 100
@@ -63,11 +66,10 @@ CREATE TABLE REGISTERED_STUDENTS(
     school_affiliation_no INT UNSIGNED NOT NULL,
     exam_centre_no INT UNSIGNED NOT NULL,
 
-    first_name VARCHAR(50) NOT NULL,
-    last_name VARCHAR(50) DEFAULT NULL,
+    candidate_name VARCHAR(60) NOT NULL,
     date_of_birth DATE NOT NULL,
     gender ENUM('M', 'F', 'O') NOT NULL,
-    class ENUM(10, 12) NOT NULL,
+    grade TINYINT UNSIGNED CHECK (grade IN (10,12)),
 
     aadhar_no BIGINT UNSIGNED UNIQUE NOT NULL,
     apaar_id BIGINT UNSIGNED UNIQUE NOT NULL,
@@ -86,7 +88,7 @@ CREATE TABLE REGISTERED_STUDENTS(
     CONSTRAINT chk_apaar_id
         CHECK (apaar_id BETWEEN 0 AND 999999999999),
     CONSTRAINT chk_admit_card_id
-        CHECK (admit_card_id REGEXP '[A-Za-z]{2}[0-9]{6}')
+        CHECK (admit_card_id REGEXP '[A-Z]{2}[1-9]{6}')
 );
 
 
@@ -109,7 +111,7 @@ CREATE TABLE EXAM_RESULTS (
     FOREIGN KEY (course_code)
         REFERENCES COURSES(course_code),
 
-    CONSTRAINT chk_valid_marks CHECK(
+    CONSTRAINT chk_result_valid_marks CHECK(
         (
             marks_theory BETWEEN 0 AND 100
             AND marks_practical BETWEEN 0 AND 100

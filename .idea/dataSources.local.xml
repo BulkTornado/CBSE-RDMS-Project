@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="dataSourceStorageLocal" created-in="PY-253.29346.142">
-    <data-source name="@localhost" uuid="9c346694-1cf3-452e-a909-9bb20e950f35">
+    <data-source name="@localhost" uuid="326710d8-cf3b-4d04-a43e-f6791a926742">
       <database-info product="MySQL" version="8.0.44-0ubuntu0.24.04.2" jdbc-version="4.2" driver-name="MySQL Connector/J" driver-version="mysql-connector-j-8.2.0 (Revision: 06a1f724497fd81c6a659131fda822c9e5085b6c)" dbms="MYSQL" exact-version="8.0.44" exact-driver-version="8.2">
         <extra-name-characters>#@</extra-name-characters>
         <identifier-quote-string>`</identifier-quote-string>
@@ -12,10 +12,8 @@
       <schema-mapping>
         <introspection-scope>
           <node kind="schema">
+            <name qname="CBSE_EXAM_RESULT_Y2025" />
             <name qname="@" />
-            <name qname="CBSE_Database" />
-            <name qname="WAREHOUSE" />
-            <name qname="SCHOOL" />
           </node>
         </introspection-scope>
       </schema-mapping>

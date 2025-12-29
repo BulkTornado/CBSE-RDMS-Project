@@ -39,8 +39,8 @@ args = parser.parse_args()
 
 
 host = "localhost"
-user = "root"
-passwd = "tks@123?"
+user = "bulk-admin"
+passwd = "BulkTornado-admin123"
 database = "CBSE_DATABASE"
 default_query = (
     "SELECT school_id as 'School ID', school_name as 'School Name' FROM schools_data;"
@@ -57,8 +57,7 @@ def show_error(e: Exception):
 
 
 try:
-    db_object = ConnectToMySQL(host, user, passwd, database, developer_mode)
-    db_object.connect_to_database()
+    db_object = ConnectToMySQL(host, user, passwd)
 except Exception as error:
     print("Database connection failed. Refer to following error report for more:\n")
 
@@ -106,7 +105,7 @@ def get_sql_query() -> str:
     final_query = " ".join(multi_line_sql_query)
 
     if final_query == ";":
-        print(f"\nNo query specified. Using the defualt query:\n{default_query}\n")
+        print(f"\nNo query specified. Using the default query:\n{default_query}\n")
         return default_query
 
     print(f"\nFinal query: {final_query}\n")
@@ -114,7 +113,6 @@ def get_sql_query() -> str:
 
 
 def main() -> None:
-    db_object.create_cursor_object()
 
     sql_query = get_sql_query()
 
@@ -128,29 +126,28 @@ def main() -> None:
         show_error(error)
         return
 
-    if db_object.check_result_set() is None:
-        print("Query executed successfully (no result set)")
-
-        db_object.execute_sql_query("COMMIT;")
-        print("COMMIT successful.")
-
-        return
 
     data = db_object.fetch_data()
 
+    if data[0] is None:
+        print("Query executed successfully (no result set)")
+
+        db_object.commit_to_database()
+
+        return
     # DEBUG: DO NOT REMOVE
     # print(type(data))
     # print(data)
     # print(repr(data))
 
     # Fetch column names from cursor
-    columns = [desc[0] for desc in db_object.get_column_name()]  # type: ignore
+    columns = [desc[0] for desc in data[0]]  #type: ignore
 
     # Pretty print results in a table format
     # OPTS : "simple", "grid"
-    print(tabulate(data, headers=columns, tablefmt="simple"))
+    print(tabulate(data[1], headers=columns, tablefmt="simple"))
 
-    print(f"\nRows retrieved: {db_object.rows_retrieved()}")
+    print(f"\nRows retrieved: {data[-1]}")
 
 
 if __name__ == "__main__":

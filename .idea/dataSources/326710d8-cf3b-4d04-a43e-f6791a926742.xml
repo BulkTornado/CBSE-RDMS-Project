@@ -102,6 +102,7 @@
 |root||root|localhost|PERSIST_RO_VARIABLES_ADMIN|G
 |root||debian-sys-maint|localhost|PROCESS|G
 |root||root|localhost|PROCESS|G
+|root||bulk-admin|localhost|REFERENCES|G
 |root||debian-sys-maint|localhost|REFERENCES|G
 |root||root|localhost|REFERENCES|G
 |root||debian-sys-maint|localhost|RELOAD|G
@@ -1073,125 +1074,48 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
     <collation id="287" parent="1" name="utf8mb4_zh_0900_as_cs">
       <Charset>utf8mb4</Charset>
     </collation>
-    <schema id="288" parent="1" name="SCHOOL">
-      <AutoIntrospectionLevel>3</AutoIntrospectionLevel>
-      <LastIntrospectionLevel>3</LastIntrospectionLevel>
-      <LastIntrospectionLocalTimestamp>2025-12-23.01:54:12</LastIntrospectionLocalTimestamp>
+    <schema id="288" parent="1" name="WAREHOUSE">
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
-    <schema id="289" parent="1" name="WAREHOUSE">
-      <AutoIntrospectionLevel>3</AutoIntrospectionLevel>
-      <LastIntrospectionLevel>3</LastIntrospectionLevel>
-      <LastIntrospectionLocalTimestamp>2025-12-23.01:54:12</LastIntrospectionLocalTimestamp>
-      <CollationName>utf8mb4_0900_ai_ci</CollationName>
-    </schema>
-    <schema id="290" parent="1" name="information_schema">
+    <schema id="289" parent="1" name="information_schema">
       <CollationName>utf8mb3_general_ci</CollationName>
     </schema>
-    <schema id="291" parent="1" name="mysql">
+    <schema id="290" parent="1" name="mysql">
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
-    <schema id="292" parent="1" name="performance_schema">
+    <schema id="291" parent="1" name="performance_schema">
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
-    <schema id="293" parent="1" name="sys">
+    <schema id="292" parent="1" name="sys">
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
-    <schema id="294" parent="1" name="temp">
+    <schema id="293" parent="1" name="temp">
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
-    <user id="295" parent="1" name="bulk-admin">
+    <user id="294" parent="1" name="bulk-admin">
       <Host>localhost</Host>
     </user>
-    <user id="296" parent="1" name="bulk-local">
+    <user id="295" parent="1" name="bulk-local">
       <Host>localhost</Host>
     </user>
-    <user id="297" parent="1" name="debian-sys-maint">
+    <user id="296" parent="1" name="debian-sys-maint">
       <Host>localhost</Host>
     </user>
-    <user id="298" parent="1" name="mysql.infoschema">
+    <user id="297" parent="1" name="mysql.infoschema">
       <CanLogin>0</CanLogin>
       <Host>localhost</Host>
     </user>
-    <user id="299" parent="1" name="mysql.session">
+    <user id="298" parent="1" name="mysql.session">
       <CanLogin>0</CanLogin>
       <Host>localhost</Host>
     </user>
-    <user id="300" parent="1" name="mysql.sys">
+    <user id="299" parent="1" name="mysql.sys">
       <CanLogin>0</CanLogin>
       <Host>localhost</Host>
     </user>
-    <user id="301" parent="1" name="root">
+    <user id="300" parent="1" name="root">
       <Host>localhost</Host>
       <Plugin>mysql_native_password</Plugin>
     </user>
-    <table id="302" parent="288" name="ITEMS">
-      <DetailsLevel>3</DetailsLevel>
-      <Engine>InnoDB</Engine>
-      <CollationName>utf8mb4_0900_ai_ci</CollationName>
-    </table>
-    <table id="303" parent="289" name="TRADERS">
-      <DetailsLevel>3</DetailsLevel>
-      <Engine>InnoDB</Engine>
-      <CollationName>utf8mb4_0900_ai_ci</CollationName>
-    </table>
-    <column id="304" parent="302" name="Code">
-      <NotNull>1</NotNull>
-      <Position>1</Position>
-      <StoredType>int|0s</StoredType>
-    </column>
-    <column id="305" parent="302" name="Iname">
-      <Position>2</Position>
-      <StoredType>varchar(50)|0s</StoredType>
-    </column>
-    <column id="306" parent="302" name="Qty">
-      <Position>3</Position>
-      <StoredType>int|0s</StoredType>
-    </column>
-    <column id="307" parent="302" name="Price">
-      <Position>4</Position>
-      <StoredType>int|0s</StoredType>
-    </column>
-    <column id="308" parent="302" name="Company">
-      <Position>5</Position>
-      <StoredType>varchar(50)|0s</StoredType>
-    </column>
-    <column id="309" parent="302" name="Tcode">
-      <Position>6</Position>
-      <StoredType>varchar(5)|0s</StoredType>
-    </column>
-    <index id="310" parent="302" name="PRIMARY">
-      <ColNames>Code</ColNames>
-      <Type>btree</Type>
-      <Unique>1</Unique>
-    </index>
-    <key id="311" parent="302" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <Primary>1</Primary>
-      <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
-    </key>
-    <column id="312" parent="303" name="TCODE">
-      <NotNull>1</NotNull>
-      <Position>1</Position>
-      <StoredType>char(3)|0s</StoredType>
-    </column>
-    <column id="313" parent="303" name="TNAME">
-      <Position>2</Position>
-      <StoredType>varchar(50)|0s</StoredType>
-    </column>
-    <column id="314" parent="303" name="CITY">
-      <Position>3</Position>
-      <StoredType>varchar(50)|0s</StoredType>
-    </column>
-    <index id="315" parent="303" name="PRIMARY">
-      <ColNames>TCODE</ColNames>
-      <Type>btree</Type>
-      <Unique>1</Unique>
-    </index>
-    <key id="316" parent="303" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <Primary>1</Primary>
-      <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
-    </key>
   </database-model>
 </dataSource>
