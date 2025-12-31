@@ -14,6 +14,7 @@ CONFIG = {
     "host": "",
     "user": "",
     "passwd": "",
+    "database": "",
     "title": "CBSE Database Manager",
     "geometry": [700, 400],
     "assets": [],

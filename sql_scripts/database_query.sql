@@ -71,6 +71,9 @@ CREATE TABLE REGISTERED_STUDENTS(
     gender ENUM('M', 'F', 'O') NOT NULL,
     grade TINYINT UNSIGNED CHECK (grade IN (10,12)),
 
+    mother_name VARCHAR(60) NOT NULL,
+    guardian_name VARCHAR(60) NOT NULL,
+
     aadhar_no BIGINT UNSIGNED UNIQUE NOT NULL,
     apaar_id BIGINT UNSIGNED UNIQUE NOT NULL,
 
@@ -88,15 +91,13 @@ CREATE TABLE REGISTERED_STUDENTS(
     CONSTRAINT chk_apaar_id
         CHECK (apaar_id BETWEEN 0 AND 999999999999),
     CONSTRAINT chk_admit_card_id
-        CHECK (admit_card_id REGEXP '[A-Z]{2}[1-9]{6}')
+        CHECK (admit_card_id REGEXP '[A-Z]{2}[0-9]{6}')
 );
 
 
 CREATE TABLE EXAM_RESULTS (
     exam_roll_no INT UNSIGNED NOT NULL,
     course_code SMALLINT UNSIGNED NOT NULL,
-
-    subject_type ENUM('MAIN','ADDITIONAL') NOT NULL,
 
     marks_theory TINYINT UNSIGNED NOT NULL,
     marks_practical TINYINT UNSIGNED DEFAULT 0 NOT NULL,
@@ -112,14 +113,8 @@ CREATE TABLE EXAM_RESULTS (
         REFERENCES COURSES(course_code),
 
     CONSTRAINT chk_result_valid_marks CHECK(
-        (
             marks_theory BETWEEN 0 AND 100
             AND marks_practical BETWEEN 0 AND 100
             AND marks_internal BETWEEN 0 AND 100
         )
-        AND -- sum is always 100
-        (
-            marks_theory + marks_practical + marks_internal = 100
-        )
-    )
 );

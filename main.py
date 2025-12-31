@@ -80,7 +80,6 @@ def display_exit():
 def close_database_connection():
     if "db_object" in globals() and db_object.check_connection():
         db_object.close_connection()
-        print("\nConnection successfully closed!\n")
 
 
 def get_sql_query() -> str:

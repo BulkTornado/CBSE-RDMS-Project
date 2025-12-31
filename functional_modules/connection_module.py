@@ -7,6 +7,11 @@ class ConnectToMySQL:
         self._host = host
         self._user = user
         self._passwd = passwd
+
+        self._result_set = []
+        self._exception_history = []
+
+
         try:
             self._db_connection = _mysql.connect(
                 host=self._host, user=self._user, passwd=self._passwd
@@ -24,8 +29,6 @@ class ConnectToMySQL:
         self._cursor = self._db_connection.cursor()
         print("Connection successful.")
 
-        self._result_set = []
-        self._exception_history = []
 
     def __enter__(self):
         return self
@@ -39,9 +42,10 @@ class ConnectToMySQL:
     def __exit__(self, exc_type, exc_value, exc_tb) -> None:
         self.close_connection()
 
-    def commit_to_database(self):
+    def commit_to_database(self, silent=False):
         self._db_connection.commit()
-        print("(COMMIT successful)")
+        if not silent:
+            print("(COMMIT successful)")
 
     def check_connection(self) -> bool:
         return self._db_connection.is_connected()
@@ -51,7 +55,7 @@ class ConnectToMySQL:
             print("Connection has already been closed.")
             return
         self._db_connection.close()
-        print("Connection closed successfully.")
+        print("\nConnection closed successfully.\n")
         return
 
     def execute_sql_query(self, sql_query: str) -> None:
@@ -67,6 +71,12 @@ class ConnectToMySQL:
             else:
                 print("(No result set)\n")
 
+        except Exception as error:
+            self.show_exception_traceback(error)
+
+    def insert_data(self, sql_query: str, data):
+        try:
+            self._cursor.executemany(sql_query, data)
         except Exception as error:
             self.show_exception_traceback(error)
 

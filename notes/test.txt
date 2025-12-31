@@ -15,3 +15,17 @@ DatabaseError(2014, "2014 (HY000): Commands out of sync; you can't run this comm
 
 Connection has already been closed.
 Set up has been completed. Now you can run main.py to start the program.
+
+(1000014, 2430393, 2430025, 'Indira Dutta', datetime.date(2009, 1, 1), 'M', 10, 'Maya Pandey', 'Kai Tara', 234870104237, 272323616699, 'N', 'DM260690')
+(1000019, 2430441, 3420165, 'Ayaan Savant', datetime.date(2009, 1, 1), 'M', 10, 'Omisha Boase', 'Faras Bhatia', 445688538440, 445542682031, 'N', 'AT688220')
+(1000014, 184, 40, 0, 0)
+(1000014, 5, 32, 0, 6)
+(1000014, 101, 59, 0, 6)
+(1000014, 4, 33, 0, 1)
+(1000014, 3, 38, 0, 5)
+(1000014, 49, 8, 19, 20)
+(1000014, 402, 28, 44, 0)
+(1000019, 85, 21, 0, 4)
+(1000019, 41, 44, 0, 12)
+(1000019, 119, 25, 0, 11)
+(1000019, 101, 69, 0, 2)

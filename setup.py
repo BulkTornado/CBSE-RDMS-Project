@@ -27,15 +27,18 @@ GRADE_10_STUDENT_COUNT: int = int(STUDENT_COUNT * 0.4)
 GRADE_12_STUDENT_COUNT: int = STUDENT_COUNT - GRADE_10_STUDENT_COUNT
 
 
-def random_dates_for_year(year: int, count: int):
+def random_dates_for_year(year: int, count: int) -> list[datetime.date]:
     start = datetime.date(year, 1, 1)
     end = datetime.date(year, 12, 31)
     days = (end - start).days + 1
 
-    return [
+    result: list[datetime.date] = [
         start + datetime.timedelta(days=random.randrange(days))
         for _ in range(count)
     ]
+    result.sort()
+
+    return result
 
 
 def generate_unique_numbers(digits: int, count: int):
@@ -56,6 +59,32 @@ def generate_unique_admit_card_ids(count: int):
         result.add(f"{prefix}{number:06d}")
 
     return list(result)
+
+
+def filter_course_by_grade(course: list, grade: int) -> list:
+    return list(
+        filter(
+            lambda x: x[-1] == grade,
+            course
+        )
+    )
+
+
+def pick_courses(grade: int):
+    main = random.sample(courses[grade]["main"], 5)
+    additional = random.sample(courses[grade]["additional"], 2)
+
+    return main, additional
+
+
+def generate_marks(course):
+    course_number, course_name, th_max, pr_max, ia_max, grade = course
+
+    th = random.randint(0, th_max)
+    pr = random.randint(0, pr_max)
+    ia = random.randint(0, ia_max)
+
+    return th, pr, ia
 
 
 if not PATH_TO_AFFILIATED_SCHOOLS_DATA.exists():
@@ -133,6 +162,18 @@ ADDITIONAL_COURSES      = list(
 )
 
 
+courses = {
+    10: {
+        "main": filter_course_by_grade(MAIN_COURSES, 10),
+        "additional": filter_course_by_grade(ADDITIONAL_COURSES, 10)
+    },
+    12: {
+        "main": filter_course_by_grade(MAIN_COURSES, 12),
+        "additional": filter_course_by_grade(ADDITIONAL_COURSES, 12)
+    }
+}
+
+
 SECONDARY_SCHOOLS_AFFILIATION_NUMBERS = [
     row[0] for row in
     filter(
@@ -149,6 +190,7 @@ SENIOR_SECONDARY_SCHOOLS_AFFILIATION_NUMBERS = [
 ]
 
 
+# Generating required number of affiliation numbers for students
 GRADE_10_SCHOOL_AFFILIATION_NOS = random.choices(
     population=SECONDARY_SCHOOLS_AFFILIATION_NUMBERS,
     k=GRADE_10_STUDENT_COUNT
@@ -157,13 +199,14 @@ GRADE_12_SCHOOL_AFFILIATION_NOS = random.choices(
     population=SENIOR_SECONDARY_SCHOOLS_AFFILIATION_NUMBERS,
     k=GRADE_12_STUDENT_COUNT
 )
+
+
 GRADE_10_DATE_OF_BIRTHS = random_dates_for_year(CURRENT_YEAR - 16, GRADE_10_STUDENT_COUNT)
 GRADE_12_DATE_OF_BIRTHS = random_dates_for_year(CURRENT_YEAR - 18, GRADE_12_STUDENT_COUNT)
-GRADE_10_DATE_OF_BIRTHS.sort()
-GRADE_12_DATE_OF_BIRTHS.sort()
 
 
-EXAM_ROLL_NUMBERS = list(range(1_000_000, 1_000_000 + STUDENT_COUNT))
+EXAM_ROLL_NUMBERS = random.sample(range(1_000_000, 9_999_999), STUDENT_COUNT)
+EXAM_ROLL_NUMBERS.sort()
 AFFILIATION_NUMBERS = GRADE_10_SCHOOL_AFFILIATION_NOS + GRADE_12_SCHOOL_AFFILIATION_NOS
 EXAM_CENTRE_NOS = random.choices(
     population=AFFILIATION_NUMBERS,
@@ -176,11 +219,9 @@ GENDERS = random.choices(
     weights=[0.52, 0.47, 0.01],
     k=STUDENT_COUNT
 )
-GRADES = random.choices(
-    population=[10, 12],
-    weights=[0.45, 0.55],
-    k=STUDENT_COUNT
-)
+GRADES = [10] * GRADE_10_STUDENT_COUNT + [12] * GRADE_12_STUDENT_COUNT
+MOTHER_NAMES = [fake.name_female() for _ in range(STUDENT_COUNT)]
+GUARDIAN_NAMES = [fake.name_male() for _ in range(STUDENT_COUNT)]
 AADHAR_NOS = generate_unique_numbers(12, STUDENT_COUNT)
 APAAR_ID = generate_unique_numbers(12, STUDENT_COUNT)
 CATEGORY_OF_PWD = random.choices(
@@ -200,6 +241,8 @@ REGISTERED_STUDENTS = list(
         DATE_OF_BIRTHS,
         GENDERS,
         GRADES,
+        MOTHER_NAMES,
+        GUARDIAN_NAMES,
         AADHAR_NOS,
         APAAR_ID,
         CATEGORY_OF_PWD,
@@ -208,27 +251,71 @@ REGISTERED_STUDENTS = list(
 )
 
 
+STUDENTS = list(
+    # [(roll number, grade), ...]
+    map(
+        lambda x: (x[0], x[6]),
+        REGISTERED_STUDENTS
+    )
+)
+
+
+EXAM_RESULTS = []
+
+for roll_no, grade in STUDENTS:
+    main_courses, add_courses = pick_courses(grade)
+
+    for course in main_courses:
+        th, pr, ia = generate_marks(course)
+        EXAM_RESULTS.append(
+            (roll_no, course[0], th, pr, ia)
+        )
+
+    for course in add_courses:
+        th, pr, ia = generate_marks(course)
+        EXAM_RESULTS.append(
+            (roll_no, course[0], th, pr, ia)
+        )
+
+
+STUDENT_BATCH = 5000
+RESULT_BATCH = 2000
+
+
 with ConnectToMySQL(
         host=HOST, user=USER, passwd =PASSWD
 ) as conn_ob:
     for line in QUERY.split(";"):
         stmt = line.strip()
         if stmt:
-            ...#conn_ob.execute_sql_query(stmt)
-    print("Database has been created.")
-    #conn_ob.execute_sql_query(f"INSERT INTO COURSES VALUES {conn_ob.parameterized_data(MAIN_COURSES + ADDITIONAL_COURSES)};")
+            conn_ob.execute_sql_query(stmt)
+    print("\nDatabase has been created.")
+
+    conn_ob.insert_data("INSERT INTO COURSES VALUES (%s, %s, %s, %s, %s, %s);", (MAIN_COURSES + ADDITIONAL_COURSES))
     conn_ob.commit_to_database()
-    print("Courses has been added.")
-    #conn_ob.execute_sql_query(f"INSERT INTO AFFILIATED_SCHOOLS VALUES {conn_ob.parameterized_data(AFFILIATED_SCHOOLS)};")
+    print("\nCourses has been added.")
+
+    conn_ob.insert_data("INSERT INTO AFFILIATED_SCHOOLS VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);", AFFILIATED_SCHOOLS)
     conn_ob.commit_to_database()
-    print("Affiliated schools has been added.")
+    print("\nAffiliated schools has been added.")
 
-    #for student_record in REGISTERED_STUDENTS: ...
+    for i in range(0, STUDENT_COUNT, STUDENT_BATCH):
+        chunk = REGISTERED_STUDENTS[i:i+STUDENT_BATCH]
+        conn_ob.insert_data("INSERT INTO REGISTERED_STUDENTS VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", chunk)
+        conn_ob.commit_to_database(silent=True)
+    print("\nRegistered students added.")
+
+    for i in range(0, len(EXAM_RESULTS), RESULT_BATCH):
+        chunk = EXAM_RESULTS[i:i+RESULT_BATCH]
+        conn_ob.insert_data("INSERT INTO EXAM_RESULTS VALUES (%s,%s,%s,%s,%s)", chunk)
+        conn_ob.commit_to_database(silent=True)
+    print("\nExam results added.")
 
 
-#CONFIG["setup_completed"] = True
-#with open(PATH_TO_CONFIG, "w") as f:
-    #json.dump(CONFIG, f, indent=4)
+CONFIG["setup_completed"] = True
+CONFIG["database"] = QUERY.split()[2].replace(";", "")
+with open(PATH_TO_CONFIG, "w") as f:
+    json.dump(CONFIG, f, indent=4)
 
 
 print("Set up has been completed. Now you can run main.py to start the program.")

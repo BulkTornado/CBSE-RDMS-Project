@@ -56,3 +56,143 @@ indian-pincode
 1000004 2730053 2430392 Bimala Hayer 2009-01-01 M 12 676306393262 931676574007 N TR149933
 
 Current known limitation: student from one state could get exam centre in another state. in this first 5 student records, only 1 such instance occurred, but at 500,000 records, I would assume a lot more such instances will be occurring.
+
+
+Each student(regardless of his/her grade), will get 5 main subjects and 2 additional subjects.
+Problem: couldn't define what subject is language subject(since only two language subjects are allowed per student)
+
+Also, another glaring issue is that students can and will have 0 marks. Nothing I can do, expect learn some curving method for random distribution or something to curve marks upwards.
+
+(2, 'Hindi Course-A', 80, 0, 20, 'MAIN', 10)
+(3, 'Urdu Course-A', 80, 0, 20, 'MAIN', 10)
+(4, 'Urdu Course-B', 80, 0, 20, 'MAIN', 10)
+(5, 'Bengali', 80, 0, 20, 'MAIN', 10)
+(41, 'Mathematics Standard', 80, 0, 20, 'MAIN', 10)
+(49, 'Painting', 30, 50, 20, 'ADDITIONAL', 10)
+(64, 'Home Science', 70, 0, 30, 'ADDITIONAL', 10)
+(85, 'Hindi Course-B', 80, 0, 20, 'MAIN', 10)
+(86, 'Science', 80, 0, 20, 'MAIN', 10)
+(87, 'Social Science', 80, 0, 20, 'MAIN', 10)
+(101, 'English Communicative', 80, 0, 20, 'MAIN', 10)
+(119, 'Sanskrit Communicative', 80, 0, 20, 'MAIN', 10)
+(122, 'Sanskrit', 80, 0, 20, 'MAIN', 10)
+(165, 'Computer Applications', 50, 0, 50, 'ADDITIONAL', 10)
+(184, 'English Lang & Literature', 80, 0, 20, 'MAIN', 10)
+(241, 'Mathematics-Basic', 80, 0, 20, 'MAIN', 10)
+(401, 'Retail', 50, 50, 0, 'ADDITIONAL', 10)
+(402, 'Information Technology', 50, 50, 0, 'ADDITIONAL', 10)
+(415, 'Multi Media', 50, 50, 0, 'ADDITIONAL', 10)
+(417, 'Artificial Intelligence', 50, 50, 0, 'ADDITIONAL', 10)
+(418, 'Physical Activity Trainer', 50, 50, 0, 'ADDITIONAL', 10)
+(419, 'Data Science', 50, 50, 0, 'ADDITIONAL', 10)
+(1, 'English Elective', 80, 0, 20, 'MAIN', 12)
+(2, 'Hindi Elective', 80, 0, 20, 'MAIN', 12)
+(3, 'Urdu Elective', 80, 0, 20, 'MAIN', 12)
+(22, 'Sanskrit Elective', 80, 0, 20, 'MAIN', 12)
+(27, 'History', 80, 0, 20, 'MAIN', 12)
+(28, 'Political Science', 80, 0, 20, 'MAIN', 12)
+(29, 'Geography', 70, 30, 0, 'MAIN', 12)
+(30, 'Economics', 80, 20, 0, 'MAIN', 12)
+(41, 'Mathematics', 80, 0, 20, 'MAIN', 12)
+(42, 'Physics', 70, 30, 0, 'MAIN', 12)
+(43, 'Chemistry', 70, 30, 0, 'MAIN', 12)
+(44, 'Biology', 70, 30, 0, 'MAIN', 12)
+(48, 'Physical Education', 70, 30, 0, 'MAIN', 12)
+(65, 'Informatics Practices', 70, 30, 0, 'MAIN', 12)
+(83, 'Computer Science', 70, 30, 0, 'MAIN', 12)
+(105, 'Bengali', 80, 0, 20, 'MAIN', 12)
+(301, 'English Core', 80, 0, 20, 'MAIN', 12)
+(302, 'Hindi Core', 80, 0, 20, 'MAIN', 12)
+(303, 'Urdu Core', 80, 0, 20, 'MAIN', 12)
+(322, 'Sanskrit Core', 80, 0, 20, 'MAIN', 12)
+(801, 'Retail', 60, 40, 0, 'ADDITIONAL', 12)
+(802, 'Information Technology', 60, 40, 0, 'ADDITIONAL', 12)
+(813, 'Health Care', 60, 40, 0, 'ADDITIONAL', 12)
+(830, 'Design', 50, 50, 0, 'ADDITIONAL', 12)
+(841, 'Yoga', 50, 50, 0, 'ADDITIONAL', 12)
+(843, 'Artificial Intelligence', 50, 50, 0, 'ADDITIONAL', 12)
+(845, 'Physical Activity Trainer', 50, 50, 0, 'ADDITIONAL', 12)
+
+is split into
+
+(2, 'Hindi Course-A', 80, 0, 20, 10)
+(3, 'Urdu Course-A', 80, 0, 20, 10)
+(4, 'Urdu Course-B', 80, 0, 20, 10)
+(5, 'Bengali', 80, 0, 20, 10)
+(41, 'Mathematics Standard', 80, 0, 20, 10)
+(85, 'Hindi Course-B', 80, 0, 20, 10)
+(86, 'Science', 80, 0, 20, 10)
+(87, 'Social Science', 80, 0, 20, 10)
+(101, 'English Communicative', 80, 0, 20, 10)
+(119, 'Sanskrit Communicative', 80, 0, 20, 10)
+(122, 'Sanskrit', 80, 0, 20, 10)
+(184, 'English Lang & Literature', 80, 0, 20, 10)
+(241, 'Mathematics-Basic', 80, 0, 20, 10)
+(1, 'English Elective', 80, 0, 20, 12)
+(2, 'Hindi Elective', 80, 0, 20, 12)
+(3, 'Urdu Elective', 80, 0, 20, 12)
+(22, 'Sanskrit Elective', 80, 0, 20, 12)
+(27, 'History', 80, 0, 20, 12)
+(28, 'Political Science', 80, 0, 20, 12)
+(29, 'Geography', 70, 30, 0, 12)
+(30, 'Economics', 80, 20, 0, 12)
+(41, 'Mathematics', 80, 0, 20, 12)
+(42, 'Physics', 70, 30, 0, 12)
+(43, 'Chemistry', 70, 30, 0, 12)
+(44, 'Biology', 70, 30, 0, 12)
+(48, 'Physical Education', 70, 30, 0, 12)
+(65, 'Informatics Practices', 70, 30, 0, 12)
+(83, 'Computer Science', 70, 30, 0, 12)
+(105, 'Bengali', 80, 0, 20, 12)
+(301, 'English Core', 80, 0, 20, 12)
+(302, 'Hindi Core', 80, 0, 20, 12)
+(303, 'Urdu Core', 80, 0, 20, 12)
+(322, 'Sanskrit Core', 80, 0, 20, 12)
+
+and
+
+(49, 'Painting', 30, 50, 20, 10)
+(64, 'Home Science', 70, 0, 30, 10)
+(165, 'Computer Applications', 50, 0, 50, 10)
+(401, 'Retail', 50, 50, 0, 10)
+(402, 'Information Technology', 50, 50, 0, 10)
+(415, 'Multi Media', 50, 50, 0, 10)
+(417, 'Artificial Intelligence', 50, 50, 0, 10)
+(418, 'Physical Activity Trainer', 50, 50, 0, 10)
+(419, 'Data Science', 50, 50, 0, 10)
+(801, 'Retail', 60, 40, 0, 12)
+(802, 'Information Technology', 60, 40, 0, 12)
+(813, 'Health Care', 60, 40, 0, 12)
+(830, 'Design', 50, 50, 0, 12)
+(841, 'Yoga', 50, 50, 0, 12)
+(843, 'Artificial Intelligence', 50, 50, 0, 12)
+(845, 'Physical Activity Trainer', 50, 50, 0, 12)
+
+(230259, 'AIR FORCE SCHOOL CHABUA', 'ASSAM', 'DIBRUGARH', 'AIR FORCE SCHOOOL CHABUA AIR FORCE STATION CHABUA CHABUA', 786102, 'afschoolchabua.in', 1983, datetime.date(1983, 1, 1), 'NURAN HUSSAIN', 'Middle Class', 'INDEPENDENT', datetime.date(2021, 4, 1), datetime.date(2024, 3, 31), '')
+(300001, 'PM SHRI KENDRIYA VIDYALAYA', 'BIHAR', 'PATNA', 'DANAPUR CANTT PATNA DISTT BIHAR', 801503, 'www.kvdanapurpatna.org', 1963, datetime.date(2009, 1, 25), 'SANJEEV KUMAR SINHA', 'Senior Secondary Level', 'KV', datetime.date(2023, 4, 1), datetime.date(2028, 3, 31), '')
+
+(1000010, 2430427, 2430445, 'Finn Dewan', datetime.date(2009, 1, 1), 'F', 10, 'Charita Dutt', 'Jairaj Tripathi', 935607637684, 153590865138, 'N', 'QO678857')
+(1000012, 2430358, 2430182, 'Januja Bhavsar', datetime.date(2009, 1, 1), 'F', 10, 'Jhalak Mohanty', 'Zayyan Toor', 837834050363, 377049826943, 'Y', 'DT311245')
+
+(1000010, 41, 77, 0, 7),
+(1000010, 101, 19, 0, 13),
+(1000010, 3, 31, 0, 0),
+(1000010, 119, 58, 0, 8),
+(1000010, 86, 4, 0, 7),
+(1000010, 64, 14, 0, 16),
+(1000010, 401, 17, 14, 0),
+(1000012, 85, 28, 0, 2),
+(1000012, 2, 52, 0, 0),
+(1000012, 4, 11, 0, 19),
+(1000012, 101, 37, 0, 8),
+(1000012, 119, 9, 0, 6),
+(1000012, 402, 4, 32, 0),
+(1000012, 419, 30, 36, 0),
+
+len(EXAM_ROLL_NUMBERS)=500000
+len(AFFILIATION_NUMBERS)=500000
+GRADES.index(12)=200000
+CATEGORY_OF_PWD.index('Y')=1
+len(REGISTERED_STUDENTS)=500000
+len(STUDENTS)=500000
+len(EXAM_RESULTS)=3500000

@@ -1,0 +1,1 @@
+[(801, 'Retail', 60, 40, 0, 12), (802, 'Information Technology', 60, 40, 0, 12), (813, 'Health Care', 60, 40, 0, 12), (830, 'Design', 50, 50, 0, 12), (841, 'Yoga', 50, 50, 0, 12), (843, 'Artificial Intelligence', 50, 50, 0, 12), (845, 'Physical Activity Trainer', 50, 50, 0, 12)]
