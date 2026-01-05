@@ -313,7 +313,6 @@ with ConnectToMySQL(
 
 
 CONFIG["setup_completed"] = True
-CONFIG["database"] = QUERY.split()[2].replace(";", "")
 with open(PATH_TO_CONFIG, "w") as f:
     json.dump(CONFIG, f, indent=4)
 

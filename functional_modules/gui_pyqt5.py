@@ -15,11 +15,11 @@ class MainWindow( QMainWindow ):
 def main() -> None:
 	app = QApplication( sys.argv )
 	
-	# Declaring the window GUI
+	# Declaring the window MainWindow
 	window = MainWindow()
 	window.show()
 	
-	# Keeping GUI open and
+	# Keeping MainWindow open and
 	# handling the closing
 	sys.exit( app.exec_() )
 

@@ -8,6 +8,8 @@ Each database will have 3 tables:
         ->  Reasoning: I remember from the exam result login page that it only asked for year of examination and student's registration number.
 
 
+sudo apt install python3-tk
+
 CLASS 10
 MAIN SUBJECT: [Language, Compulsory Subject]
 ADDITIONAL SUBJECT: [Other Subject, Skill Subject]

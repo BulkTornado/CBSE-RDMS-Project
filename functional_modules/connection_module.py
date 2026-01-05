@@ -88,8 +88,9 @@ class ConnectToMySQL:
     def parameterized_data(data: list | tuple) -> str:
         return ','.join(map(str, data))
 
-    def use_db(self, db_name: str = "") -> None:
-        self.execute_sql_query(f"USE {db_name};")
+    def connect_to_database(self, database_name: str = "") -> None:
+        self.execute_sql_query(f"USE {database_name};")
+        print("\nConnected to database.\n")
 
     def show_stored_data(self):
         for item in self._result_set:

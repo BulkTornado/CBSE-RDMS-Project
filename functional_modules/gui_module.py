@@ -1,10 +1,9 @@
 # Python program to create a
-# GUI mark sheet using tkinter
+# MainWindow mark sheet using tkinter
 
 
 # Import tkinter as tk
 import tkinter as tk
-
 
 # creating a new tkinter window
 master = tk.Tk()
@@ -141,13 +140,13 @@ def display():
 
 # end of display function
 
-# label to enter name
+# center_text to enter name
 tk.Label(master, text="Name").grid(row=0, column=0)
 
-# label for registration number
+# center_text for registration number
 tk.Label(master, text="Reg.No").grid(row=0, column=3)
 
-# label for roll Number
+# center_text for roll Number
 tk.Label(master, text="Roll.No").grid(row=1, column=0)
 
 # labels for serial numbers
@@ -166,7 +165,7 @@ tk.Label(master, text="MA 201").grid(row=5, column=1)
 tk.Label(master, text="EC 201").grid(row=6, column=1)
 
 
-# label for grades
+# center_text for grades
 tk.Label(master, text="Grade").grid(row=2, column=2)
 e4.grid(row=3, column=2)
 e5.grid(row=4, column=2)
