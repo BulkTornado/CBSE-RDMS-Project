@@ -10,7 +10,7 @@ CONFIG = {
     "host": "",
     "user": "",
     "passwd": "",
-    "database": "CBSE_EXAM_RESULT_YXXXX",
+    "database": "",
     "setup_completed": False
 }
 
@@ -20,14 +20,14 @@ def main():
         print("config.json doesn't exists, creating config.json file first.")
         PATH_TO_CONFIG.touch()
         print(
-            f"config.json has been created at the following path: {PATH_TO_CONFIG},\n"
+            f"config.json has been created at the following path: {PATH_TO_CONFIG.absolute()},\n"
             f"continuing with setting-up your configs."
         )
 
     host            = input("Enter host(press Enter to set host as 'localhost'): ") or "localhost"
     user            = input("Enter username(press Enter to set user as 'root'): ") or "root"
     passwd          = input("Enter password: ")
-    database        = CONFIG.get("database").replace("XXXX", str(CURRENT_YEAR))
+    database        = "CBSE_EXAM_RESULT_YXXXX".replace("XXXX", str(CURRENT_YEAR))
     setup_completed = bool(input("Press Enter if set up has not been completed before, else enter 1: "))
 
 

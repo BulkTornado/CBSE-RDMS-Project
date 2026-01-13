@@ -9,5 +9,5 @@ wheels/
 # Virtual environment
 .venv
 
-# Ignore config file
+# Config
 config.json
