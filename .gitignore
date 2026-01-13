@@ -1,6 +1,8 @@
 # Python-generated files
 __pycache__/
+*.pyc
 *.pc[oc]
+.env
 build/
 dist/
 wheels/
@@ -8,6 +10,9 @@ wheels/
 
 # Virtual environment
 .venv
+
+# Idea folder(no idea wtf is this)
+.idea/
 
 # Config
 config.json
