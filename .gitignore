@@ -1,6 +1,13 @@
-# Ignore .venv directory
+# Python-generated files
+__pycache__/
+*.pc[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environment
 .venv
+
 # Ignore config file
 config.json
-# Ignore python version
-.python-version
