@@ -1,2 +1,6 @@
+# Ignore .venv directory
+.venv
 # Ignore config file
 config.json
+# Ignore python version
+.python-version

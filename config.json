@@ -1,7 +1,0 @@
-{
-    "host": "localhost",
-    "user": "bulk-admin",
-    "passwd": "BulkTornado-admin123",
-    "database": "CBSE_EXAM_RESULT_Y2025",
-    "setup_completed": true
-}

@@ -1,0 +1,22 @@
+[
+    (1, 'English Elective', 80, 0, 20, 12),
+    (2, 'Hindi Elective', 80, 0, 20, 12),
+    (3, 'Urdu Elective', 80, 0, 20, 12),
+    (22, 'Sanskrit Elective', 80, 0, 20, 12),
+    (27, 'History', 80, 0, 20, 12),
+    (28, 'Political Science', 80, 0, 20, 12),
+    (29, 'Geography', 70, 30, 0, 12),
+    (30, 'Economics', 80, 20, 0, 12),
+    (41, 'Mathematics', 80, 0, 20, 12),
+    (42, 'Physics', 70, 30, 0, 12),
+    (43, 'Chemistry', 70, 30, 0, 12),
+    (44, 'Biology', 70, 30, 0, 12),
+    (48, 'Physical Education', 70, 30, 0, 12),
+    (65, 'Informatics Practices', 70, 30, 0, 12),
+    (83, 'Computer Science', 70, 30, 0, 12),
+    (105, 'Bengali', 80, 0, 20, 12),
+    (301, 'English Core', 80, 0, 20, 12),
+    (302, 'Hindi Core', 80, 0, 20, 12),
+    (303, 'Urdu Core', 80, 0, 20, 12),
+    (322, 'Sanskrit Core', 80, 0, 20, 12)
+]

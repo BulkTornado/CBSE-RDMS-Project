@@ -1,0 +1,7 @@
+Below are the first few data
+[
+    (230259, 'AIR FORCE SCHOOL CHABUA', 'ASSAM', 'DIBRUGARH', 'AIR FORCE SCHOOOL CHABUA AIR FORCE STATION CHABUA CHABUA', 786102, 'afschoolchabua.in', 1983, datetime.date(1983, 1, 1), 'NURAN HUSSAIN', 'Middle Class', 'INDEPENDENT', datetime.date(2021, 4, 1), datetime.date(2024, 3, 31), ''),
+    (300001, 'PM SHRI KENDRIYA VIDYALAYA', 'BIHAR', 'PATNA', 'DANAPUR CANTT PATNA DISTT BIHAR', 801503, 'www.kvdanapurpatna.org', 1963, datetime.date(2009, 1, 25), 'SANJEEV KUMAR SINHA', 'Senior Secondary Level', 'KV', datetime.date(2023, 4, 1), datetime.date(2028, 3, 31), ''),
+    (300003, 'PM SHRI KENDRIYA VIDYALAYA', 'BIHAR', 'PATNA', 'KANKAR BAGH PATNA BIHAR', 800020, 'https://no1patna.kvs.ac.in/', 1966, datetime.date(2009, 1, 25), 'MAHESHWAR PRASAD SINGH', 'Senior Secondary Level', 'KV', datetime.date(2024, 4, 1), datetime.date(2029, 3, 31), ''),
+    ...
+]

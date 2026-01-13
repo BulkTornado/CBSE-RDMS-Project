@@ -4,26 +4,24 @@ Python program to access MySQL database.
 
 import atexit
 import json
-import sys, io
+import sys
 from pathlib import Path
 
 import tkinter as tk
 
-import cairosvg
 from PIL import Image, ImageTk
 import tabulate
 
-from functional_modules import ConnectToMySQL
+from modules import ConnectToMySQL
 
 
 PATH_TO_ASSETS_DIR  = Path() / "assets"
 PATH_TO_CONFIG      = Path() / 'config.json'
 
 
-# Only 2 assets in SVG format
 ASSETS: list[Path] = [
-    PATH_TO_ASSETS_DIR / 'CBSE_logo.svg',
-    PATH_TO_ASSETS_DIR / 'KVS_logo.svg'
+    PATH_TO_ASSETS_DIR / 'CBSE_logo.png',
+    PATH_TO_ASSETS_DIR / 'KVS_logo.jpeg'
 ]
 MISSING_ASSETS  = []
 
@@ -51,13 +49,6 @@ if check_for_missing_assets():
     sys.exit()
 
 
-cbse_logo_png_bytes = cairosvg.svg2png(url=ASSETS[0].__str__())
-kvs_logo_png_bytes  = cairosvg.svg2png(url=ASSETS[1].__str__())
-
-cbse_logo_png       = Image.open(io.BytesIO(cbse_logo_png_bytes)).resize((100, 100))
-kvs_logo_png        = Image.open(io.BytesIO(kvs_logo_png_bytes)).resize((100, 100))
-
-
 if not PATH_TO_CONFIG.exists():
     print(f"Config file doesn't exists at the following file path: {PATH_TO_CONFIG.absolute()}")
     print("Run the set_configuration.py file as given in the instruction manual to set up the config file.")
@@ -74,6 +65,8 @@ if not CONFIG.get("setup_completed"):
     print("If that is not the case, please run set_configuration and follow the instructions carefully.")
     sys.exit()
 
+cbse_logo_png       = Image.open(fp = ASSETS[0]).resize((100, 100))
+kvs_logo_jpeg       = Image.open(fp = ASSETS[1]).resize((100, 100))
 
 HOST = CONFIG.get("host")
 USER = CONFIG.get("user")
@@ -90,7 +83,7 @@ def close_connection():
 
 
 def get_affiliated_school(affiliation_number: int):
-    query = """
+    query_to_retrieve_affiliated_school = """
         SELECT 
             affiliation_no AS 'Affiliation Number',
             name_of_institution AS 'Name of Institution',
@@ -105,7 +98,7 @@ def get_affiliated_school(affiliation_number: int):
         FROM AFFILIATED_SCHOOLS
         WHERE affiliation_no = %s;
     """
-    CONN_OB.execute_sql_query(query % affiliation_number)
+    CONN_OB.execute_sql_query(query_to_retrieve_affiliated_school % affiliation_number)
 
     fetched_school_records = CONN_OB.fetch_data()
 
@@ -113,18 +106,24 @@ def get_affiliated_school(affiliation_number: int):
 
 
 def get_admit_card_info(exam_roll_number: int):
-    query = """
+    query_to_retrieve_admit_card = """
         SELECT
             r.exam_roll_no AS 'Roll No.',
-            r.school_affiliation_no AS 'School',
-            r.exam_centre_no AS 'Exam Centre No.',
+            CONCAT(
+                s.affiliation_no, ' - ',
+                s.name_of_institution, ', ',
+                s.postal_address
+            ) AS 'School',
+            CONCAT(
+                c.affiliation_no, ' - ',
+                c.name_of_institution, ', ',
+                c.postal_address
+            ) AS 'Exam Centre',
             r.grade AS 'CLASS',
             r.candidate_name AS 'Candidate Name',
             r.mother_name AS 'Mother Name',
             r.guardian_name AS 'Guardian''s/Father''s Name',
             r.date_of_birth AS 'Date of Birth',
-            s.name_of_institution AS 'School Name',
-            c.name_of_institution AS 'Exam Centre Name',
             r.category_of_pwd AS 'PWD Category',
             r.admit_card_id AS 'Admit Card ID'
         FROM REGISTERED_STUDENTS r
@@ -134,7 +133,7 @@ def get_admit_card_info(exam_roll_number: int):
             ON r.exam_centre_no = c.affiliation_no
         WHERE r.exam_roll_no = %s;
     """
-    CONN_OB.execute_sql_query(query % exam_roll_number)
+    CONN_OB.execute_sql_query(query_to_retrieve_admit_card % exam_roll_number)
 
     fetched_student_records = CONN_OB.fetch_data()
 
@@ -142,7 +141,7 @@ def get_admit_card_info(exam_roll_number: int):
 
 
 def get_student_record(exam_roll_number: int):
-    query_student = """
+    query_to_retrieve_student_record = """
         SELECT
             r.candidate_name AS 'Candidate Name',
             r.exam_roll_no AS 'Roll No.',
@@ -160,7 +159,7 @@ def get_student_record(exam_roll_number: int):
         WHERE r.exam_roll_no = %s;
     """
 
-    query_marks = """
+    query_to_retrieve_marksheet = """
         SELECT
             c.course_code AS 'Course Code',
             c.course_name AS 'Subject',
@@ -177,10 +176,10 @@ def get_student_record(exam_roll_number: int):
         ORDER BY c.course_code;
     """
 
-    CONN_OB.execute_sql_query(query_student % exam_roll_number)
+    CONN_OB.execute_sql_query(query_to_retrieve_student_record % exam_roll_number)
     fetched_student_record = CONN_OB.fetch_data()
 
-    CONN_OB.execute_sql_query(query_marks % exam_roll_number)
+    CONN_OB.execute_sql_query(query_to_retrieve_marksheet % exam_roll_number)
     fetched_marks_record = CONN_OB.fetch_data()
 
     return fetched_student_record, fetched_marks_record
@@ -196,7 +195,7 @@ class MainWindow:
         self._root.columnconfigure(1, weight=1)
 
         tk_cbse_logo = ImageTk.PhotoImage(cbse_logo_png)
-        tk_kvs_logo = ImageTk.PhotoImage(kvs_logo_png)
+        tk_kvs_logo = ImageTk.PhotoImage(kvs_logo_jpeg)
 
         self._photo_1 = tk.Label(
             self._root,
@@ -441,45 +440,8 @@ class ExamResult(tk.Toplevel):
 
 def main() -> None:
     root = tk.Tk()
-    app = MainWindow(root)
+    MainWindow(root)
     root.mainloop()
-
-    """
-    sql_query = get_sql_query()
-
-    try:
-        if developer_mode:
-            print(f"[DEV MODE] Executing SQL Query:\n{sql_query}\n")
-        db_object.execute_sql_query(sql_query)
-    # '_mysql' refers to _mysql.connector
-    # _mysql.errors.ProgrammingError
-    except Exception as error:
-        show_error(error)
-        return
-
-
-    data = db_object.fetch_data()
-
-    if data[0] is None:
-        print("Query executed successfully (no result set)")
-
-        db_object.commit_to_database()
-
-        return
-    # DEBUG: DO NOT REMOVE
-    # print(type(data))
-    # print(data)
-    # print(repr(data))
-
-    # Fetch column names from cursor
-    columns = [desc[0] for desc in data[0]]  #type: ignore
-
-    # Pretty print results in a table format
-    # OPTS : "simple", "grid"
-    print(tabulate.tabulate(data[1], headers=columns, tablefmt="simple"))
-
-    print(f"\nRows retrieved: {data[-1]}")
-    """
 
 
 if __name__ == "__main__":

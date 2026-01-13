@@ -1,5 +1,0 @@
-mysql-connector-python
-pillow
-tabulate
-ruff
-faker
